@@ -46,6 +46,7 @@ const RegisterPage = () => {
 		setEmail('')
 		setPassword('')
 		setConfirmPassword('')
+		console.log(error)
 
 		navigate('/login')
 	}
