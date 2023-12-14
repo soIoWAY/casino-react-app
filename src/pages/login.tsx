@@ -1,7 +1,9 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { initializeFirebase } from '../../firebase.ts'
+import { setUser } from '../store/user/user.slice.ts'
 const LoginPage = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -12,6 +14,8 @@ const LoginPage = () => {
 
 	const navigate = useNavigate()
 
+	const dispatch = useDispatch()
+
 	const submitFormHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
@@ -21,7 +25,12 @@ const LoginPage = () => {
 				email,
 				password
 			)
-			// dispatch(setUser({ email: userCredentials.user.email }))
+			dispatch(
+				setUser({
+					email: userCredentials.user.email,
+					uid: userCredentials.user.uid,
+				})
+			)
 			console.log(userCredentials.user)
 		} catch (error: unknown) {
 			if (error instanceof Error) {
