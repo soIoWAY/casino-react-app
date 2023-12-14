@@ -1,14 +1,16 @@
+import banner from '../assets/banner1.jpg'
+import mobBanner from '../assets/mob-banner.jpg'
 const Banner = () => {
 	return (
 		<div className='p-10'>
 			<div className='banner flex justify-center'>
 				<img
-					src='../../public/banner1.jpg'
+					src={banner}
 					alt='banner'
 					className='md:w-90% h-[380px] object-cover hidden md:block'
 				/>
 				<img
-					src='../../public/mob-banner.jpg'
+					src={mobBanner}
 					alt='mob-banner'
 					className='object-cover md:hidden w-full'
 				/>
