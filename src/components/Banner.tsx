@@ -2,7 +2,7 @@ import banner from '../assets/banner1.jpg'
 import mobBanner from '../assets/mob-banner.jpg'
 const Banner = () => {
 	return (
-		<div className='p-10'>
+		<div className='p-4 md:p-10'>
 			<div className='banner flex justify-center'>
 				<img
 					src={banner}
