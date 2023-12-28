@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 interface INavLinkProps {
 	title: string
 	href: string
@@ -6,7 +8,7 @@ interface INavLinkProps {
 const NavLink = ({ title, href }: INavLinkProps) => {
 	return (
 		<div>
-			<a href={href}>{title}</a>
+			<Link to={href}>{title}</Link>
 		</div>
 	)
 }

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { RootState } from '../store/store'
 import Navbar from './Navbar'
+
 const Header = () => {
 	const { uid } = useSelector((state: RootState) => state.user)
 

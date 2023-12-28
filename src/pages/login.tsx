@@ -1,9 +1,11 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+
 import { initializeFirebase } from '../../firebase.ts'
 import { setUser } from '../store/user/user.slice.ts'
+import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+
 const LoginPage = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -32,6 +34,7 @@ const LoginPage = () => {
 				})
 			)
 			console.log(userCredentials.user)
+			navigate('/', { replace: true })
 		} catch (error: unknown) {
 			if (error instanceof Error) {
 				setError(error.message)
@@ -40,8 +43,6 @@ const LoginPage = () => {
 
 		setEmail('')
 		setPassword('')
-
-		navigate('/')
 	}
 	return (
 		<div className='min-h-screen flex justify-center items-center'>
