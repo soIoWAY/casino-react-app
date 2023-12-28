@@ -1,11 +1,11 @@
-import Layout from '../app/Layout'
+// import Layout from '../app/Layout'
 
-const SlotGames = () => {
-	return (
-		<div>
-			<Layout>slot games</Layout>
-		</div>
-	)
-}
+// const SlotGames = () => {
+// 	return (
+// 		<div>
+// 			<Layout>slot games</Layout>
+// 		</div>
+// 	)
+// }
 
-export default SlotGames
+// export default SlotGames
