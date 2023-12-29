@@ -1,12 +1,54 @@
+import {
+	DocumentData,
+	Firestore,
+	doc,
+	getDoc,
+	getFirestore,
+	setDoc,
+} from 'firebase/firestore'
+import { useEffect, useState } from 'react'
+
 import { CgProfile } from 'react-icons/cg'
 import { PiPlusCircleFill } from 'react-icons/pi'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { initializeFirebase } from '../../firebase'
 import { RootState } from '../store/store'
 import Navbar from './Navbar'
 
 const Header = () => {
 	const { uid } = useSelector((state: RootState) => state.user)
+	const [balance, setBalance] = useState<number | null>(null)
+	const [db, setDb] = useState<Firestore | null>(null)
+
+	useEffect(() => {
+		const firebaseApp = initializeFirebase()
+		const firestore: Firestore = getFirestore(firebaseApp)
+		setDb(firestore)
+	}, [])
+
+	useEffect(() => {
+		const fetchBalance = async () => {
+			try {
+				if (db && uid) {
+					const balanceDocRef = doc(db, 'balance', uid)
+					const balanceDocSnap = await getDoc(balanceDocRef)
+					if (balanceDocSnap.exists()) {
+						const data = balanceDocSnap.data() as DocumentData
+						if (data && typeof data.balance === 'number') {
+							setBalance(data.balance as number)
+						}
+					} else {
+						await setDoc(doc(db, 'balance', uid), { balance: 100 })
+						setBalance(100)
+					}
+				}
+			} catch (err) {
+				console.error('Error fetching balance - ', err)
+			}
+		}
+		fetchBalance()
+	}, [db, uid])
 
 	// const convetToNickname = (email: string | null) => {
 	// 	if (email) {
@@ -35,7 +77,7 @@ const Header = () => {
 						<CgProfile />
 					</div>
 					<div className='font-semibold'>
-						<span>94.34 ₴</span>
+						<span>{balance}₴</span>
 					</div>
 					<button className='text-2xl text-red-600'>
 						<PiPlusCircleFill />
