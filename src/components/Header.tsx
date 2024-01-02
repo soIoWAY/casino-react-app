@@ -9,12 +9,12 @@ import {
 import { useEffect, useState } from 'react'
 
 import { CgProfile } from 'react-icons/cg'
-import { PiPlusCircleFill } from 'react-icons/pi'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { initializeFirebase } from '../../firebase'
-import { RootState } from '../store/store'
 import Navbar from './Navbar'
+import { PiPlusCircleFill } from 'react-icons/pi'
+import { RootState } from '../store/store'
+import { initializeFirebase } from '../../firebase'
+import { useSelector } from 'react-redux'
 
 const Header = () => {
 	const { uid } = useSelector((state: RootState) => state.user)
@@ -25,6 +25,8 @@ const Header = () => {
 		const firebaseApp = initializeFirebase()
 		const firestore: Firestore = getFirestore(firebaseApp)
 		setDb(firestore)
+		const user: any = { name: 'test', surname: 'test', pass: 'test' }
+		console.log(user)
 	}, [])
 
 	useEffect(() => {
