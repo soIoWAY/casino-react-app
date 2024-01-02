@@ -29,3 +29,20 @@ export const fetchBalance = async (
 		console.error('Error fetching balance - ', err)
 	}
 }
+
+export const fetchStats = async (db: Firestore, uid: string) => {
+	try {
+		if (db && uid) {
+			const statsDocRef = doc(db, 'stats', uid)
+			const statsDocSnap = await getDoc(statsDocRef)
+			if (statsDocSnap.exists()) {
+				const data = statsDocSnap.data() as DocumentData
+				console.log(data)
+			} else {
+				await setDoc(doc(db, 'stats', uid), { wins: 0, loses: 0 })
+			}
+		}
+	} catch (err) {
+		console.error('Error fetching stats - ', err)
+	}
+}

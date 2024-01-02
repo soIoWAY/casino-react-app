@@ -1,5 +1,6 @@
 import { Firestore, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
+import { fetchBalance, fetchStats } from '../utils/statsUtils'
 
 import { CgProfile } from 'react-icons/cg'
 import { PiPlusCircleFill } from 'react-icons/pi'
@@ -7,39 +8,43 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { initializeFirebase } from '../../firebase'
 import { RootState } from '../store/store'
-import { fetchBalance } from '../utils/statsUtils'
 import Navbar from './Navbar'
+import UserMenu from './userMenu/UserMenu'
 
 const Header = () => {
-	const { uid } = useSelector((state: RootState) => state.user)
+	const { uid, email } = useSelector((state: RootState) => state.user)
 	const [balance, setBalance] = useState<number | null>(null)
 	const [db, setDb] = useState<Firestore | null>(null)
+	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+
+	const openUserMenuHandler = () => {
+		setIsUserMenuOpen(!isUserMenuOpen)
+	}
 
 	useEffect(() => {
 		const firebaseApp = initializeFirebase()
 		const firestore: Firestore = getFirestore(firebaseApp)
 		setDb(firestore)
-		const user: any = { name: 'test', surname: 'test', pass: 'test' }
-		console.log(user)
 	}, [])
 
 	useEffect(() => {
 		if (db && uid) {
 			fetchBalance(db, uid, setBalance)
+			fetchStats(db, uid)
 		}
 	}, [db, uid])
 
-	// const convetToNickname = (email: string | null) => {
-	// 	if (email) {
-	// 		const index = email.indexOf('@')
+	const convetToNickname = (email: string | null) => {
+		if (email) {
+			const index = email.indexOf('@')
 
-	// 		if (index !== -1) {
-	// 			return email.substring(0, index)
-	// 		} else {
-	// 			console.log('Індекс не знайдено')
-	// 		}
-	// 	}
-	// }
+			if (index !== -1) {
+				return email.substring(0, index)
+			} else {
+				console.log('Індекс не знайдено')
+			}
+		}
+	}
 	return (
 		<div className='flex justify-between items-center w-full flex-wrap mx-auto px-6 md:px-12 py-6 bg-[#1C1632] shadow-lg'>
 			<Link to='/'>
@@ -52,9 +57,17 @@ const Header = () => {
 			</div>
 			{uid ? (
 				<div className='flex gap-2 items-center'>
-					<div className='text-3xl border-r-2 pr-2 cursor-pointer'>
+					<button
+						className='text-3xl border-r-2 pr-2 cursor-pointer'
+						onClick={openUserMenuHandler}
+					>
 						<CgProfile />
-					</div>
+					</button>
+					{isUserMenuOpen && (
+						<div className='absolute shadow-md mt-3 right-26 top-14'>
+							<UserMenu nickname={convetToNickname(email)} />
+						</div>
+					)}
 					<div className='font-semibold'>
 						<span>{balance}₴</span>
 					</div>
