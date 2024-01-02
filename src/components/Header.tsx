@@ -1,20 +1,14 @@
-import {
-	DocumentData,
-	Firestore,
-	doc,
-	getDoc,
-	getFirestore,
-	setDoc,
-} from 'firebase/firestore'
+import { Firestore, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 
 import { CgProfile } from 'react-icons/cg'
-import { Link } from 'react-router-dom'
-import Navbar from './Navbar'
 import { PiPlusCircleFill } from 'react-icons/pi'
-import { RootState } from '../store/store'
-import { initializeFirebase } from '../../firebase'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { initializeFirebase } from '../../firebase'
+import { RootState } from '../store/store'
+import { fetchBalance } from '../utils/statsUtils'
+import Navbar from './Navbar'
 
 const Header = () => {
 	const { uid } = useSelector((state: RootState) => state.user)
@@ -30,26 +24,9 @@ const Header = () => {
 	}, [])
 
 	useEffect(() => {
-		const fetchBalance = async () => {
-			try {
-				if (db && uid) {
-					const balanceDocRef = doc(db, 'balance', uid)
-					const balanceDocSnap = await getDoc(balanceDocRef)
-					if (balanceDocSnap.exists()) {
-						const data = balanceDocSnap.data() as DocumentData
-						if (data && typeof data.balance === 'number') {
-							setBalance(data.balance as number)
-						}
-					} else {
-						await setDoc(doc(db, 'balance', uid), { balance: 100 })
-						setBalance(100)
-					}
-				}
-			} catch (err) {
-				console.error('Error fetching balance - ', err)
-			}
+		if (db && uid) {
+			fetchBalance(db, uid, setBalance)
 		}
-		fetchBalance()
 	}, [db, uid])
 
 	// const convetToNickname = (email: string | null) => {
@@ -75,7 +52,7 @@ const Header = () => {
 			</div>
 			{uid ? (
 				<div className='flex gap-2 items-center'>
-					<div className='text-3xl border-r-2  pr-2'>
+					<div className='text-3xl border-r-2 pr-2 cursor-pointer'>
 						<CgProfile />
 					</div>
 					<div className='font-semibold'>
