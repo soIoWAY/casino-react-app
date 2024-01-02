@@ -14,6 +14,8 @@ import UserMenu from './userMenu/UserMenu'
 const Header = () => {
 	const { uid, email } = useSelector((state: RootState) => state.user)
 	const [balance, setBalance] = useState<number | null>(null)
+	const [wins, setWins] = useState<number | null>(null)
+	const [loses, setLoses] = useState<number | null>(null)
 	const [db, setDb] = useState<Firestore | null>(null)
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
@@ -30,7 +32,7 @@ const Header = () => {
 	useEffect(() => {
 		if (db && uid) {
 			fetchBalance(db, uid, setBalance)
-			fetchStats(db, uid)
+			fetchStats(db, uid, setWins, setLoses)
 		}
 	}, [db, uid])
 
@@ -65,7 +67,11 @@ const Header = () => {
 					</button>
 					{isUserMenuOpen && (
 						<div className='absolute shadow-md mt-3 right-26 top-14'>
-							<UserMenu nickname={convetToNickname(email)} />
+							<UserMenu
+								nickname={convetToNickname(email)}
+								wins={wins}
+								loses={loses}
+							/>
 						</div>
 					)}
 					<div className='font-semibold'>

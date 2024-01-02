@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
 import Layout from '../../app/Layout'
 
 const Diamonds = () => {
@@ -10,13 +11,35 @@ const Diamonds = () => {
 	const [item2, setItem2] = useState<string>('💎')
 	const [item3, setItem3] = useState<string>('💎')
 
-	const [isGameStarted, setIsGameStarted] = useState<boolean>(false)
+	const [isAnimating, setIsAnimating] = useState<boolean>(false)
 
 	const updateItems = () => {
-		setItem1(items[randomItems()])
-		setItem2(items[randomItems()])
-		setItem3(items[randomItems()])
+		const delay = 150
+
+		const animate = () => {
+			setIsAnimating(true)
+			setItem1(items[randomItems()])
+			setTimeout(() => {
+				setItem2(items[randomItems()])
+			}, delay)
+			setTimeout(() => {
+				setItem3(items[randomItems()])
+			}, delay * 2)
+			setTimeout(() => {
+				setIsAnimating(false)
+			}, delay * 3)
+		}
+
+		animate()
 	}
+
+	useEffect(() => {
+		if (!isAnimating) {
+			const items = [item1, item2, item3]
+			console.log(items)
+		}
+	}, [item1, item2, item3, isAnimating])
+
 	return (
 		<div>
 			<Layout>

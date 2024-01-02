@@ -30,16 +30,24 @@ export const fetchBalance = async (
 	}
 }
 
-export const fetchStats = async (db: Firestore, uid: string) => {
+export const fetchStats = async (
+	db: Firestore,
+	uid: string,
+	setWins: (wins: number) => void,
+	setLoses: (loses: number) => void
+) => {
 	try {
 		if (db && uid) {
 			const statsDocRef = doc(db, 'stats', uid)
 			const statsDocSnap = await getDoc(statsDocRef)
 			if (statsDocSnap.exists()) {
 				const data = statsDocSnap.data() as DocumentData
-				console.log(data)
+				setWins(data.wins as number)
+				setLoses(data.loses as number)
 			} else {
 				await setDoc(doc(db, 'stats', uid), { wins: 0, loses: 0 })
+				setWins(0)
+				setLoses(0)
 			}
 		}
 	} catch (err) {
