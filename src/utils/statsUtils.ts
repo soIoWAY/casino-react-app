@@ -5,6 +5,9 @@ import {
 	getDoc,
 	setDoc,
 } from 'firebase/firestore'
+import { increaseLoses, increaseWins } from '../store/user/stats.slice'
+
+import { Dispatch } from '@reduxjs/toolkit'
 
 export const fetchBalance = async (
 	db: Firestore,
@@ -52,5 +55,47 @@ export const fetchStats = async (
 		}
 	} catch (err) {
 		console.error('Error fetching stats - ', err)
+	}
+}
+
+export const updateWins = async (
+	db: Firestore | null,
+	uid: string | null,
+	dispatch: Dispatch
+) => {
+	try {
+		if (db && uid) {
+			const statsDocRef = doc(db, 'stats', uid)
+			const statsDocSnap = await getDoc(statsDocRef)
+			if (statsDocSnap.exists()) {
+				const data = statsDocSnap.data() as DocumentData
+				const currentWins = data.wins as number
+				await setDoc(statsDocRef, { wins: currentWins + 1 }, { merge: true })
+				dispatch(increaseWins())
+			}
+		}
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+export const updateLoses = async (
+	db: Firestore | null,
+	uid: string | null,
+	dispatch: Dispatch
+) => {
+	try {
+		if (db && uid) {
+			const statsDocRef = doc(db, 'stats', uid)
+			const statsDocSnap = await getDoc(statsDocRef)
+			if (statsDocSnap.exists()) {
+				const data = statsDocSnap.data() as DocumentData
+				const currentLoses = data.loses as number
+				await setDoc(statsDocRef, { loses: currentLoses + 1 }, { merge: true })
+				dispatch(increaseLoses())
+			}
+		}
+	} catch (error) {
+		console.error(error)
 	}
 }

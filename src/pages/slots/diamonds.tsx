@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateLoses, updateWins } from '../../utils/statsUtils'
 
 import Layout from '../../app/Layout'
+import { RootState } from '../../store/store'
 
 const Diamonds = () => {
 	const items: string[] = ['💎', '❄️', '⛄️', '🎁', '🎄', '🎅🏻']
@@ -12,6 +15,13 @@ const Diamonds = () => {
 	const [item3, setItem3] = useState<string>('💎')
 
 	const [isAnimating, setIsAnimating] = useState<boolean>(false)
+	const [isAnimatingCompleted, setIsAnimatingCompleted] =
+		useState<boolean>(false)
+
+	const { db } = useSelector((state: RootState) => state.db)
+	const { uid } = useSelector((state: RootState) => state.user)
+
+	const dispatch = useDispatch()
 
 	const updateItems = () => {
 		const delay = 150
@@ -27,6 +37,7 @@ const Diamonds = () => {
 			}, delay * 2)
 			setTimeout(() => {
 				setIsAnimating(false)
+				setIsAnimatingCompleted(true)
 			}, delay * 3)
 		}
 
@@ -34,11 +45,26 @@ const Diamonds = () => {
 	}
 
 	useEffect(() => {
-		if (!isAnimating) {
+		if (!isAnimating && isAnimatingCompleted) {
 			const items = [item1, item2, item3]
-			console.log(items)
+			if (item1 === item2 && item2 === item3) {
+				updateWins(db, uid, dispatch)
+			} else if (item1 === item2 || item2 === item3) {
+				updateWins(db, uid, dispatch)
+			} else {
+				updateLoses(db, uid, dispatch)
+			}
 		}
-	}, [item1, item2, item3, isAnimating])
+	}, [
+		item1,
+		item2,
+		item3,
+		isAnimating,
+		dispatch,
+		db,
+		uid,
+		isAnimatingCompleted,
+	])
 
 	return (
 		<div>

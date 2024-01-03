@@ -1,27 +1,38 @@
 import { Firestore, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchBalance, fetchStats } from '../utils/statsUtils'
 
 import { CgProfile } from 'react-icons/cg'
 import { PiPlusCircleFill } from 'react-icons/pi'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { initializeFirebase } from '../../firebase'
+import { setDB } from '../store/db/db.slice'
 import { RootState } from '../store/store'
+import { setStats } from '../store/user/stats.slice'
 import Navbar from './Navbar'
 import UserMenu from './userMenu/UserMenu'
 
 const Header = () => {
 	const { uid, email } = useSelector((state: RootState) => state.user)
+	const { wins, loses, balances } = useSelector(
+		(state: RootState) => state.stats
+	)
 	const [balance, setBalance] = useState<number | null>(null)
-	const [wins, setWins] = useState<number | null>(null)
-	const [loses, setLoses] = useState<number | null>(null)
+	const [win, setWin] = useState<number | null>(null)
+	const [lose, setLose] = useState<number | null>(null)
 	const [db, setDb] = useState<Firestore | null>(null)
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+
+	const dispatch = useDispatch()
 
 	const openUserMenuHandler = () => {
 		setIsUserMenuOpen(!isUserMenuOpen)
 	}
+
+	useEffect(() => {
+		dispatch(setDB({ db: db }))
+	}, [db, dispatch])
 
 	useEffect(() => {
 		const firebaseApp = initializeFirebase()
@@ -30,9 +41,19 @@ const Header = () => {
 	}, [])
 
 	useEffect(() => {
+		dispatch(
+			setStats({
+				balances: balance,
+				wins: win,
+				loses: lose,
+			})
+		)
+	}, [dispatch, balance, win, lose])
+
+	useEffect(() => {
 		if (db && uid) {
 			fetchBalance(db, uid, setBalance)
-			fetchStats(db, uid, setWins, setLoses)
+			fetchStats(db, uid, setWin, setLose)
 		}
 	}, [db, uid])
 
