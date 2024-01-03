@@ -9,6 +9,8 @@ import { initializeFirebase } from '../../firebase'
 import { setUser } from '../store/user/user.slice'
 
 const auth = getAuth(initializeFirebase())
+
+// Розлогінізація
 export const logoutUser = async () => {
 	try {
 		await auth.signOut()
@@ -17,6 +19,7 @@ export const logoutUser = async () => {
 	}
 }
 
+// Логінізація
 export const loginUser = async (
 	email: string,
 	password: string,
@@ -42,11 +45,8 @@ export const loginUser = async (
 	}
 }
 
-export const registerUser = async (
-	email: string,
-	password: string,
-	setError: (error: string) => void
-) => {
+// Реєстрація
+export const registerUser = async (email: string, password: string) => {
 	try {
 		const userCredentials = await createUserWithEmailAndPassword(
 			auth,
@@ -56,7 +56,7 @@ export const registerUser = async (
 		console.log(userCredentials.user.displayName)
 	} catch (error: unknown) {
 		if (error instanceof Error) {
-			setError(error.message)
+			console.log(error)
 		}
 	}
 }

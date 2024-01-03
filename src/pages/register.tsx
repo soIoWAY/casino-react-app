@@ -1,47 +1,36 @@
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useState } from 'react'
+import useValidation from '../hooks/useValidation'
 import { registerUser } from '../utils/authUtils'
 
 const RegisterPage = () => {
 	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
 
-	const [error, setError] = useState('')
+	const {
+		password,
+		confirmPassword,
+		setPassword,
+		setConfirmPassword,
+		validate,
+	} = useValidation()
 
 	const navigate = useNavigate()
 
-	const validate = () => {
-		// hook
-		if (password !== confirmPassword) {
-			alert('Паролі не збігаються')
-			return false
-		}
-
-		if (password.length < 8) {
-			alert('Мінімальна довжина пароля - 8 символів')
-			return false
-		}
-
-		return true
-	}
-
 	const submitFormHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		if (validate()) {
+		const isValid = validate()
+		if (isValid) {
 			try {
-				registerUser(email, password, setError)
+				registerUser(email, password)
 			} catch (error) {
 				console.log(error)
 			}
+			navigate('/login')
 		}
 		setEmail('')
 		setPassword('')
 		setConfirmPassword('')
-		console.log(error)
-
-		navigate('/login')
 	}
 
 	return (
