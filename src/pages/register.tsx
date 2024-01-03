@@ -1,8 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 
-import { getAuth } from 'firebase/auth'
 import { useState } from 'react'
-import { initializeFirebase } from '../../firebase'
 import { registerUser } from '../utils/authUtils'
 
 const RegisterPage = () => {
@@ -11,8 +9,6 @@ const RegisterPage = () => {
 	const [confirmPassword, setConfirmPassword] = useState('')
 
 	const [error, setError] = useState('')
-
-	const auth = getAuth(initializeFirebase())
 
 	const navigate = useNavigate()
 

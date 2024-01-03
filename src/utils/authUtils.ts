@@ -53,6 +53,7 @@ export const registerUser = async (
 			email,
 			password
 		)
+		console.log(userCredentials.user.displayName)
 	} catch (error: unknown) {
 		if (error instanceof Error) {
 			setError(error.message)
