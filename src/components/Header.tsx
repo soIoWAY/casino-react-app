@@ -15,9 +15,7 @@ import UserMenu from './userMenu/UserMenu'
 
 const Header = () => {
 	const { uid, email } = useSelector((state: RootState) => state.user)
-	const { wins, loses, balances } = useSelector(
-		(state: RootState) => state.stats
-	)
+	const { wins, loses } = useSelector((state: RootState) => state.stats)
 	const [balance, setBalance] = useState<number | null>(null)
 	const [win, setWin] = useState<number | null>(null)
 	const [lose, setLose] = useState<number | null>(null)

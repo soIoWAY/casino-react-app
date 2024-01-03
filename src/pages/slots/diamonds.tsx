@@ -47,6 +47,7 @@ const Diamonds = () => {
 	useEffect(() => {
 		if (!isAnimating && isAnimatingCompleted) {
 			const items = [item1, item2, item3]
+			console.log(items.length)
 			if (item1 === item2 && item2 === item3) {
 				updateWins(db, uid, dispatch)
 			} else if (item1 === item2 || item2 === item3) {
