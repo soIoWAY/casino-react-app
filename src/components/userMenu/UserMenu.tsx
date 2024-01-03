@@ -1,3 +1,7 @@
+import { useDispatch } from 'react-redux'
+import { setUser } from '../../store/user/user.slice'
+import { logoutUser } from '../../utils/authUtils'
+
 interface IUserMenuProps {
 	nickname: string | undefined
 	wins: number | null
@@ -5,8 +9,22 @@ interface IUserMenuProps {
 }
 
 const UserMenu = ({ nickname, wins, loses }: IUserMenuProps) => {
+	const dispatch = useDispatch()
+	const logoutHandler = async () => {
+		try {
+			await logoutUser()
+			dispatch(
+				setUser({
+					email: null,
+					uid: null,
+				})
+			)
+		} catch (err) {
+			console.log(err)
+		}
+	}
 	return (
-		<div className='border-2 border-red-600 rounded-md px-4 md:px-6 py-3 bg-[#1C1632]'>
+		<div className='border-2 border-red-600 rounded-md px-2 md:px-5 py-3 bg-[#1C1632]'>
 			<div className='user-menu_header border-b-2 pb-2'>
 				<h4 className='font-bold'>{nickname}</h4>
 			</div>
@@ -15,7 +33,7 @@ const UserMenu = ({ nickname, wins, loses }: IUserMenuProps) => {
 				<span>Loses: {loses}</span>
 			</div>
 			<div className='user-menu_footer border-t-2 font-bold text-center'>
-				<button>
+				<button onClick={logoutHandler}>
 					Log <span className='text-red-600'>out</span>
 				</button>
 			</div>

@@ -1,18 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
-import { initializeFirebase } from '../../firebase.ts'
-import { setUser } from '../store/user/user.slice.ts'
-import { useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../utils/authUtils.ts'
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
 	const [error, setError] = useState('')
-
-	const auth = getAuth(initializeFirebase())
 
 	const navigate = useNavigate()
 
@@ -22,23 +18,10 @@ const LoginPage = () => {
 		e.preventDefault()
 
 		try {
-			const userCredentials = await signInWithEmailAndPassword(
-				auth,
-				email,
-				password
-			)
-			dispatch(
-				setUser({
-					email: userCredentials.user.email,
-					uid: userCredentials.user.uid,
-				})
-			)
-			console.log(userCredentials.user)
+			loginUser(email, password, dispatch, setError)
 			navigate('/', { replace: true })
-		} catch (error: unknown) {
-			if (error instanceof Error) {
-				setError(error.message)
-			}
+		} catch (err) {
+			console.error(err)
 		}
 
 		setEmail('')
@@ -57,6 +40,7 @@ const LoginPage = () => {
 						className='border-2 bg-transparent p-1 rounded-md text-center outline-none'
 						placeholder='email'
 						name='email'
+						maxLength={24}
 						value={email}
 						required
 						onChange={e => setEmail(e.target.value)}

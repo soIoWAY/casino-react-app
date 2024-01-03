@@ -1,7 +1,10 @@
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+
+import { getAuth } from 'firebase/auth'
+import { useState } from 'react'
 import { initializeFirebase } from '../../firebase'
+import { registerUser } from '../utils/authUtils'
+
 const RegisterPage = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -14,6 +17,7 @@ const RegisterPage = () => {
 	const navigate = useNavigate()
 
 	const validate = () => {
+		// hook
 		if (password !== confirmPassword) {
 			alert('Паролі не збігаються')
 			return false
@@ -31,16 +35,9 @@ const RegisterPage = () => {
 		e.preventDefault()
 		if (validate()) {
 			try {
-				const userCredentials = await createUserWithEmailAndPassword(
-					auth,
-					email,
-					password
-				)
-				console.log('Registered user:', userCredentials.user)
-			} catch (error: unknown) {
-				if (error instanceof Error) {
-					setError(error.message)
-				}
+				registerUser(email, password, setError)
+			} catch (error) {
+				console.log(error)
 			}
 		}
 		setEmail('')
@@ -66,6 +63,7 @@ const RegisterPage = () => {
 						required
 						name='email'
 						value={email}
+						maxLength={24}
 						onChange={e => setEmail(e.target.value)}
 					/>
 					<input

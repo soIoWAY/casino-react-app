@@ -37,6 +37,7 @@ const Header = () => {
 	}, [db, uid])
 
 	const convetToNickname = (email: string | null) => {
+		// hook
 		if (email) {
 			const index = email.indexOf('@')
 
