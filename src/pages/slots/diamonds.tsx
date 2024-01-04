@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { decreaseBalance, increaseBalance } from '../../store/user/stats.slice'
 import {
 	updateLoses,
 	updateLosesBalances,
@@ -48,7 +49,8 @@ const Diamonds = () => {
 			alert('Недостатньо коштів на балансів')
 		} else {
 			const animate = () => {
-				updateLosesBalances(db, uid, dispatch, userBet)
+				updateLosesBalances(db, uid, userBet)
+				dispatch(decreaseBalance(userBet))
 				setIsAnimating(true)
 				setDisabled(true)
 				setItem1(items[randomItems()])
@@ -77,10 +79,11 @@ const Diamonds = () => {
 			console.log(items.length)
 			if (item1 === item2 && item2 === item3) {
 				updateWins(db, uid, dispatch)
-				updateWinBalances(db, uid, dispatch, userBet * 15)
+				updateWinBalances(db, uid, userBet * 15)
 			} else if (item1 === item2 || item2 === item3) {
 				updateWins(db, uid, dispatch)
-				updateWinBalances(db, uid, dispatch, userBet * 2)
+				updateWinBalances(db, uid, userBet * 2)
+				dispatch(increaseBalance(userBet * 2))
 			} else {
 				updateLoses(db, uid, dispatch)
 			}

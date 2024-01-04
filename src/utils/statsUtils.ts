@@ -5,12 +5,7 @@ import {
 	getDoc,
 	setDoc,
 } from 'firebase/firestore'
-import {
-	decreaseBalance,
-	increaseBalance,
-	increaseLoses,
-	increaseWins,
-} from '../store/user/stats.slice'
+import { increaseLoses, increaseWins } from '../store/user/stats.slice'
 
 import { Dispatch } from '@reduxjs/toolkit'
 
@@ -108,7 +103,6 @@ export const updateLoses = async (
 export const updateWinBalances = async (
 	db: Firestore | null,
 	uid: string | null,
-	dispatch: Dispatch,
 	userBet: number
 ) => {
 	try {
@@ -123,7 +117,6 @@ export const updateWinBalances = async (
 					{ balance: currentBalance + userBet },
 					{ merge: true }
 				)
-				dispatch(increaseBalance(userBet))
 			}
 		}
 	} catch (error) {
@@ -134,7 +127,6 @@ export const updateWinBalances = async (
 export const updateLosesBalances = async (
 	db: Firestore | null,
 	uid: string | null,
-	dispatch: Dispatch,
 	userBet: number
 ) => {
 	try {
@@ -149,7 +141,6 @@ export const updateLosesBalances = async (
 					{ balance: currentBalance - userBet },
 					{ merge: true }
 				)
-				dispatch(decreaseBalance(userBet))
 			}
 		}
 	} catch (error) {
