@@ -16,7 +16,7 @@ const Diamonds = () => {
 
 	const [isAnimating, setIsAnimating] = useState<boolean>(false)
 	const [isAnimatingCompleted, setIsAnimatingCompleted] =
-		useState<boolea>(false)
+		useState<boolean>(false)
 
 	const [disabled, setDisabled] = useState(false)
 
