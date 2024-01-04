@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateLoses, updateWins } from '../../utils/statsUtils'
+import {
+	updateLoses,
+	updateLosesBalances,
+	updateWinBalances,
+	updateWins,
+} from '../../utils/statsUtils'
 
 import Layout from '../../app/Layout'
+import Controls from '../../components/controls/Controls'
 import { RootState } from '../../store/store'
 
 const Diamonds = () => {
-	const items: string[] = ['💎', '❄️', '⛄️', '🎁', '🎄', '🎅🏻']
+	const items: string[] = ['💎', '💍', '🗝', '⚔️', '🗡', '👑', '🏰']
 	const randomItems: () => number = () => {
 		return Math.floor(Math.random() * items.length)
 	}
@@ -20,34 +26,49 @@ const Diamonds = () => {
 
 	const [disabled, setDisabled] = useState(false)
 
+	const [userBet, setUserBet] = useState(0)
+
 	const { db } = useSelector((state: RootState) => state.db)
 	const { uid } = useSelector((state: RootState) => state.user)
 
 	const dispatch = useDispatch()
 
+	const { balances } = useSelector((state: RootState) => state.stats)
+
 	const updateItems = () => {
 		const delay = 150
 
-		const animate = () => {
-			setIsAnimating(true)
-			setDisabled(true)
-			setItem1(items[randomItems()])
-			setTimeout(() => {
-				setItem2(items[randomItems()])
-			}, delay)
-			setTimeout(() => {
-				setItem3(items[randomItems()])
-			}, delay * 2)
-			setTimeout(() => {
-				setIsAnimating(false)
-				setIsAnimatingCompleted(true)
-			}, delay * 3)
-			setTimeout(() => {
-				setDisabled(false)
-			}, delay * 5)
-		}
+		if (isNaN(userBet)) {
+			setUserBet(0)
+		} else if (userBet < 2) {
+			alert('Сума ставки має бути більшою або рівною 2')
+		} else if (userBet > 999) {
+			alert('Сума ставки має бути меншою за 1000')
+		} else if (balances && balances - userBet < 0) {
+			alert('Недостатньо коштів на балансів')
+		} else {
+			const animate = () => {
+				updateLosesBalances(db, uid, dispatch, userBet)
+				setIsAnimating(true)
+				setDisabled(true)
+				setItem1(items[randomItems()])
+				setTimeout(() => {
+					setItem2(items[randomItems()])
+				}, delay)
+				setTimeout(() => {
+					setItem3(items[randomItems()])
+				}, delay * 2)
+				setTimeout(() => {
+					setIsAnimating(false)
+					setIsAnimatingCompleted(true)
+				}, delay * 3)
+				setTimeout(() => {
+					setDisabled(false)
+				}, delay * 5)
+			}
 
-		animate()
+			animate()
+		}
 	}
 
 	useEffect(() => {
@@ -56,8 +77,10 @@ const Diamonds = () => {
 			console.log(items.length)
 			if (item1 === item2 && item2 === item3) {
 				updateWins(db, uid, dispatch)
+				updateWinBalances(db, uid, dispatch, userBet * 15)
 			} else if (item1 === item2 || item2 === item3) {
 				updateWins(db, uid, dispatch)
+				updateWinBalances(db, uid, dispatch, userBet * 2)
 			} else {
 				updateLoses(db, uid, dispatch)
 			}
@@ -84,9 +107,12 @@ const Diamonds = () => {
 							<span className='p-1'>{item3}</span>
 						</div>
 					</div>
-					<div className='betsButton'>
+					<div className='controlsButtons mt-5'>
+						<Controls userBet={userBet} setUserBet={setUserBet} />
+					</div>
+					<div className='spinButton'>
 						<button
-							className='border-2 border-red-600 rounded-md uppercase text-bold  px-8 py-2 mt-5 tracking-wide'
+							className='border-2 border-red-600 rounded-md uppercase text-bold px-8 py-2 mt-5 tracking-wide'
 							onClick={updateItems}
 							disabled={disabled}
 						>

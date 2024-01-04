@@ -15,7 +15,9 @@ import UserMenu from './userMenu/UserMenu'
 
 const Header = () => {
 	const { uid, email } = useSelector((state: RootState) => state.user)
-	const { wins, loses } = useSelector((state: RootState) => state.stats)
+	const { wins, loses, balances } = useSelector(
+		(state: RootState) => state.stats
+	)
 	const [balance, setBalance] = useState<number | null>(null)
 	const [win, setWin] = useState<number | null>(null)
 	const [lose, setLose] = useState<number | null>(null)
@@ -94,8 +96,8 @@ const Header = () => {
 							/>
 						</div>
 					)}
-					<div className='font-semibold'>
-						<span>{balance}₴</span>
+					<div className='font-semibold w-9'>
+						<span>{balances}₴</span>
 					</div>
 					<button className='text-2xl text-red-600'>
 						<PiPlusCircleFill />

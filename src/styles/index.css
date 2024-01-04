@@ -6,3 +6,12 @@ body {
 	background: #0f051e;
 	color: #edecef;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+input[type='number'] {
+	-moz-appearance: textfield;
+}

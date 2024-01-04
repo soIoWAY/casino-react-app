@@ -5,7 +5,12 @@ import {
 	getDoc,
 	setDoc,
 } from 'firebase/firestore'
-import { increaseLoses, increaseWins } from '../store/user/stats.slice'
+import {
+	decreaseBalance,
+	increaseBalance,
+	increaseLoses,
+	increaseWins,
+} from '../store/user/stats.slice'
 
 import { Dispatch } from '@reduxjs/toolkit'
 
@@ -93,6 +98,58 @@ export const updateLoses = async (
 				const currentLoses = data.loses as number
 				await setDoc(statsDocRef, { loses: currentLoses + 1 }, { merge: true })
 				dispatch(increaseLoses())
+			}
+		}
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+export const updateWinBalances = async (
+	db: Firestore | null,
+	uid: string | null,
+	dispatch: Dispatch,
+	userBet: number
+) => {
+	try {
+		if (db && uid) {
+			const balanceDocRef = doc(db, 'balance', uid)
+			const balanceDocSnap = await getDoc(balanceDocRef)
+			if (balanceDocSnap.exists()) {
+				const data = balanceDocSnap.data() as DocumentData
+				const currentBalance = data.balance as number
+				await setDoc(
+					balanceDocRef,
+					{ balance: currentBalance + userBet },
+					{ merge: true }
+				)
+				dispatch(increaseBalance(userBet))
+			}
+		}
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+export const updateLosesBalances = async (
+	db: Firestore | null,
+	uid: string | null,
+	dispatch: Dispatch,
+	userBet: number
+) => {
+	try {
+		if (db && uid) {
+			const balanceDocRef = doc(db, 'balance', uid)
+			const balanceDocSnap = await getDoc(balanceDocRef)
+			if (balanceDocSnap.exists()) {
+				const data = balanceDocSnap.data() as DocumentData
+				const currentBalance = data.balance as number
+				await setDoc(
+					balanceDocRef,
+					{ balance: currentBalance - userBet },
+					{ merge: true }
+				)
+				dispatch(decreaseBalance(userBet))
 			}
 		}
 	} catch (error) {

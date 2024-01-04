@@ -29,8 +29,24 @@ const statsSlice = createSlice({
 				state.loses += 1
 			}
 		},
+		increaseBalance(state, action: PayloadAction<number>) {
+			if (state.balances !== null) {
+				state.balances += action.payload
+			}
+		},
+		decreaseBalance(state, action: PayloadAction<number>) {
+			if (state.balances !== null) {
+				state.balances -= action.payload
+			}
+		},
 	},
 })
 
-export const { setStats, increaseWins, increaseLoses } = statsSlice.actions
+export const {
+	setStats,
+	increaseWins,
+	increaseLoses,
+	increaseBalance,
+	decreaseBalance,
+} = statsSlice.actions
 export default statsSlice.reducer
