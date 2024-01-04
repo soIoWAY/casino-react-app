@@ -16,7 +16,9 @@ const Diamonds = () => {
 
 	const [isAnimating, setIsAnimating] = useState<boolean>(false)
 	const [isAnimatingCompleted, setIsAnimatingCompleted] =
-		useState<boolean>(false)
+		useState<boolea>(false)
+
+	const [disabled, setDisabled] = useState(false)
 
 	const { db } = useSelector((state: RootState) => state.db)
 	const { uid } = useSelector((state: RootState) => state.user)
@@ -28,6 +30,7 @@ const Diamonds = () => {
 
 		const animate = () => {
 			setIsAnimating(true)
+			setDisabled(true)
 			setItem1(items[randomItems()])
 			setTimeout(() => {
 				setItem2(items[randomItems()])
@@ -39,6 +42,9 @@ const Diamonds = () => {
 				setIsAnimating(false)
 				setIsAnimatingCompleted(true)
 			}, delay * 3)
+			setTimeout(() => {
+				setDisabled(false)
+			}, delay * 5)
 		}
 
 		animate()
@@ -82,6 +88,7 @@ const Diamonds = () => {
 						<button
 							className='border-2 border-red-600 rounded-md uppercase text-bold  px-8 py-2 mt-5 tracking-wide'
 							onClick={updateItems}
+							disabled={disabled}
 						>
 							spin
 						</button>
