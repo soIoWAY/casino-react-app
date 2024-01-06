@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { decreaseBalance, increaseBalance } from '../../store/user/stats.slice'
-import {
-	updateLoses,
-	updateLosesBalances,
-	updateWinBalances,
-	updateWins,
-} from '../../utils/statsUtils'
 
 import Layout from '../../app/Layout'
 import Controls from '../../components/controls/Controls'
 import { RootState } from '../../store/store'
+import { decreaseBalance } from '../../store/user/stats.slice'
+import { diamondChecker } from '../../utils/diamondsUtils'
+import { updateLosesBalances } from '../../utils/statsUtils'
 
 const Diamonds = () => {
-	const items: string[] = ['💎', '💍', '🗝', '⚔️', '🗡', '👑', '🏰']
+	const items: string[] = ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯']
 	const randomItems: () => number = () => {
 		return Math.floor(Math.random() * items.length)
 	}
@@ -77,16 +73,20 @@ const Diamonds = () => {
 		if (!isAnimating && isAnimatingCompleted) {
 			const items = [item1, item2, item3]
 			console.log(items.length)
-			if (item1 === item2 && item2 === item3) {
-				updateWins(db, uid, dispatch)
-				updateWinBalances(db, uid, userBet * 15)
-			} else if (item1 === item2 || item2 === item3) {
-				updateWins(db, uid, dispatch)
-				updateWinBalances(db, uid, userBet * 2)
-				dispatch(increaseBalance(userBet * 2))
-			} else {
-				updateLoses(db, uid, dispatch)
-			}
+			diamondChecker(items, db, uid, dispatch, userBet)
+			// if (item1 === item2 && item2 === item3) {
+			// 	updateWins(db, uid)
+			// 	dispatch(increaseWins())
+			// 	updateWinBalances(db, uid, userBet * 15)
+			// } else if (item1 === item2 || item2 === item3) {
+			// 	updateWins(db, uid)
+			// 	dispatch(increaseWins())
+			// 	updateWinBalances(db, uid, userBet * 2)
+			// 	dispatch(increaseBalance(userBet * 2))
+			// } else {
+			// 	updateLoses(db, uid)
+			// 	dispatch(increaseLoses())
+			// }
 		}
 	}, [
 		item1,
