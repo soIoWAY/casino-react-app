@@ -57,15 +57,17 @@ export const diamondChecker: DiamondCheckerFunction = (
 		winCombineFunction(db, uid, dispatch, userBet * combines.crownJewels)
 	} else if (items.every(item => item === '📯')) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.fanfareOfVictory)
-	} else if (items.includes('⚔️')) {
-		// loseFunction(db, uid, dispatch)
-		winCombineFunction(db, uid, dispatch, userBet)
 	} else if (items[0] === items[1] || items[1] === items[2]) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.classic)
 	} else {
 		loseFunction(db, uid, dispatch)
 	}
 }
+
+// // else if (items.includes('⚔️')) {
+// 		// loseFunction(db, uid, dispatch)
+// 		winCombineFunction(db, uid, dispatch, userBet)
+// 	}
 
 const winCombineFunction = (
 	db: Firestore | null,
