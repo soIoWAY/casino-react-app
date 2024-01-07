@@ -1,11 +1,3 @@
-// 📯 👑 ☠️ - x50 Король помер
-// 🏰 🛡️ 🏹 - x47 Замок в облозі
-//📯 🗡 🛡️ - х44 Розпочалась війна
-//⚔️ 👑 ☠️ - x41 Громадянська війна
-// 👑 x5 = x125
-// 💎 x4 = x64
-// 🗡 x3 = x27
-
 import {
 	increaseBalance,
 	increaseLoses,
@@ -24,6 +16,20 @@ type DiamondCheckerFunction = (
 	userBet: number
 ) => void
 
+const combines = {
+	diamondFortune: 77, // 💎💎💎 - х77 Diamond Fortune
+	royalTriumph: 50, // 👑👑👑 - х50 Royal Triumph
+	castleDefense: 30, // 🛡🏰📯 - х30 Castle Defense
+	epicBattle: 20, // ⚔️🗡☠️ - х20 Epic Battle
+	swordDance: 15, // 🗡🗡🗡 - х15 Sword Dance
+	fortressStone: 10, // 🏰🏰🏰 - х10 Fortress Stone
+	deadlyTrio: 5, // ☠️☠️☠️ - х5 Deadly Trio
+	regalDefence: 3, // 👑👑🛡 - х3 Regal Defense
+	crownJewels: 3, // 💎💎👑 - х3 Crown Jewels
+	fanfareOfVictory: 3, // 📯📯📯 - х3 Fanfare of Victory
+	classic: 2,
+}
+
 export const diamondChecker: DiamondCheckerFunction = (
 	items,
 	db,
@@ -31,27 +37,33 @@ export const diamondChecker: DiamondCheckerFunction = (
 	dispatch,
 	userBet
 ) => {
-	if (items[0] === '📯' && items[1] === '👑' && items[2] === '☠️') {
-		winCombineFunction(db, uid, dispatch, userBet * 50)
-	} else if (items[0] === '🏰' && items[1] === '🛡️' && items[2] === '🏹') {
-		winCombineFunction(db, uid, dispatch, userBet * 47)
-	} else if (items[0] === '📯' && items[1] === '🗡' && items[2] === '🛡️') {
-		winCombineFunction(db, uid, dispatch, userBet * 44)
-	} else if (items[0] === '⚔️' && items[1] === '👑' && items[2] === '☠️') {
-		winCombineFunction(db, uid, dispatch, userBet * 41)
+	if (items.every(item => item === '💎')) {
+		winCombineFunction(db, uid, dispatch, userBet * combines.diamondFortune)
 	} else if (items.every(item => item === '👑')) {
-		winCombineFunction(db, uid, dispatch, userBet * 38)
-	} else if (items.every(item => item === '💎')) {
-		winCombineFunction(db, uid, dispatch, userBet * 35)
+		winCombineFunction(db, uid, dispatch, userBet * combines.royalTriumph)
+	} else if (items[0] === '🛡' && items[1] === '🏰' && items[2] === '📯') {
+		winCombineFunction(db, uid, dispatch, userBet * combines.castleDefense)
+	} else if (items[0] === '⚔️' && items[1] === '🗡' && items[2] === '☠️') {
+		winCombineFunction(db, uid, dispatch, userBet * combines.epicBattle)
 	} else if (items.every(item => item === '🗡')) {
-		winCombineFunction(db, uid, dispatch, userBet * 33)
+		winCombineFunction(db, uid, dispatch, userBet * combines.swordDance)
+	} else if (items.every(item => item === '🏰')) {
+		winCombineFunction(db, uid, dispatch, userBet * combines.fortressStone)
+	} else if (items.every(item => item === '☠️')) {
+		winCombineFunction(db, uid, dispatch, userBet * combines.deadlyTrio)
+	} else if (items[0] === '👑' && items[1] === items[0] && items[2] === '🛡') {
+		winCombineFunction(db, uid, dispatch, userBet * combines.regalDefence)
+	} else if (items[0] === '💎' && items[1] === items[0] && items[2] === '👑') {
+		winCombineFunction(db, uid, dispatch, userBet * combines.crownJewels)
+	} else if (items.every(item => item === '📯')) {
+		winCombineFunction(db, uid, dispatch, userBet * combines.fanfareOfVictory)
 	} else if (items.includes('⚔️')) {
-		updateLoses(db, uid)
-		dispatch(increaseLoses())
-	} else if (items[0] === items[1] && items[2] === items[1]) {
-		winCombineFunction(db, uid, dispatch, userBet * 15)
+		// loseFunction(db, uid, dispatch)
+		winCombineFunction(db, uid, dispatch, userBet)
 	} else if (items[0] === items[1] || items[1] === items[2]) {
-		winCombineFunction(db, uid, dispatch, userBet * 2)
+		winCombineFunction(db, uid, dispatch, userBet * combines.classic)
+	} else {
+		loseFunction(db, uid, dispatch)
 	}
 }
 
@@ -65,4 +77,13 @@ const winCombineFunction = (
 	dispatch(increaseWins())
 	dispatch(increaseBalance(userBet))
 	updateWinBalances(db, uid, userBet)
+}
+
+const loseFunction = (
+	db: Firestore | null,
+	uid: string | null,
+	dispatch: Dispatch
+) => {
+	updateLoses(db, uid)
+	dispatch(increaseLoses())
 }
