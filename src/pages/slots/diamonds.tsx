@@ -3,10 +3,64 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Layout from '../../app/Layout'
 import Controls from '../../components/controls/Controls'
+import TopCombine from '../../components/topCombines/TopCombine'
 import { RootState } from '../../store/store'
 import { decreaseBalance } from '../../store/user/stats.slice'
 import { diamondChecker } from '../../utils/diamondsUtils'
 import { updateLosesBalances } from '../../utils/statsUtils'
+
+const combines = [
+	{
+		title: 'Diamond Fortune',
+		combine: '💎💎💎',
+		x: '77',
+	},
+	{
+		title: 'Royal Triumph',
+		combine: '👑👑👑',
+		x: '50',
+	},
+	{
+		title: 'Castle Defense',
+		combine: '🛡🏰📯',
+		x: '30',
+	},
+	{
+		title: 'Epic Battle',
+		combine: '⚔️🗡☠️',
+		x: '20',
+	},
+	{
+		title: 'Dance of Sword',
+		combine: '🗡🗡🗡',
+		x: '15',
+	},
+	{
+		title: 'Fortress Stone',
+		combine: '🏰🏰🏰',
+		x: '10',
+	},
+	{
+		title: 'Deadly Trio',
+		combine: '☠️☠️☠️',
+		x: '5',
+	},
+	{
+		title: 'Fanfare of Victory',
+		combine: '📯📯📯',
+		x: '4',
+	},
+	{
+		title: 'Regal Defense',
+		combine: '👑👑🛡',
+		x: '3',
+	},
+	{
+		title: 'Crown Jewels',
+		combine: '💎💎👑',
+		x: '3',
+	},
+]
 
 const Diamonds = () => {
 	const items: string[] = ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯'] // ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯']
@@ -72,7 +126,6 @@ const Diamonds = () => {
 	useEffect(() => {
 		if (!isAnimating && isAnimatingCompleted) {
 			const items = [item1, item2, item3]
-			console.log(items.length)
 			diamondChecker(items, db, uid, dispatch, userBet)
 		}
 	}, [
@@ -89,7 +142,7 @@ const Diamonds = () => {
 	return (
 		<div>
 			<Layout>
-				<div className='flex flex-col items-center justify-center h-[80vh]'>
+				<div className='flex flex-col items-center justify-center h-[75vh]'>
 					<div className='game border-2 rounded-md w-9/12 md:w-4/12 py-12 md:py-16 flex justify-center md:h-8/12'>
 						<div className='text-5xl md:text-6xl flex justify-center  items-center border-red-600 border-t-2 border-b-2 py-3'>
 							<span className='p-1'>{item1}</span>
@@ -109,6 +162,9 @@ const Diamonds = () => {
 							spin
 						</button>
 					</div>
+				</div>
+				<div className='flex justify-center'>
+					<TopCombine combines={combines} />
 				</div>
 			</Layout>
 		</div>

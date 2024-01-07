@@ -26,7 +26,7 @@ const combines = {
 	deadlyTrio: 5, // ☠️☠️☠️ - х5 Deadly Trio
 	regalDefence: 3, // 👑👑🛡 - х3 Regal Defense
 	crownJewels: 3, // 💎💎👑 - х3 Crown Jewels
-	fanfareOfVictory: 3, // 📯📯📯 - х3 Fanfare of Victory
+	fanfareOfVictory: 4, // 📯📯📯 - х3 Fanfare of Victory
 	classic: 2,
 }
 
