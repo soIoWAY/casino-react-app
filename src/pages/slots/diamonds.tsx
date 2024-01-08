@@ -36,6 +36,7 @@ const Diamonds = () => {
 
 	useEffect(() => {
 		const audio = new Audio('/src/assets/sounds/backgroundSound.mp3')
+		audio.loop = true
 
 		const playSound = () => {
 			audio.play()
