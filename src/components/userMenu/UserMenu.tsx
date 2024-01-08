@@ -3,7 +3,7 @@ import { setUser } from '../../store/user/user.slice'
 import { logoutUser } from '../../utils/authUtils'
 
 interface IUserMenuProps {
-	nickname: string | undefined
+	nickname: string | null
 	wins: number | null
 	loses: number | null
 }
