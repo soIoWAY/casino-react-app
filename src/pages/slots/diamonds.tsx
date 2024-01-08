@@ -12,6 +12,8 @@ import { diamondsCombines } from '../../utils/combines'
 import { diamondChecker } from '../../utils/diamondsUtils'
 import { updateLosesBalances } from '../../utils/statsUtils'
 
+//@ts-ignore
+
 const Diamonds = () => {
 	const items: string[] = ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯'] // ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯']
 	const randomItems: () => number = () => {
