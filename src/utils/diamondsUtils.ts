@@ -64,11 +64,6 @@ export const diamondChecker: DiamondCheckerFunction = (
 	}
 }
 
-// // else if (items.includes('⚔️')) {
-// 		// loseFunction(db, uid, dispatch)
-// 		winCombineFunction(db, uid, dispatch, userBet)
-// 	}
-
 const winCombineFunction = (
 	db: Firestore | null,
 	uid: string | null,
