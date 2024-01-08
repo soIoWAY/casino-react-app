@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import useSound from 'use-sound'
 import Layout from '../../app/Layout'
-import backgroundSound from '../../assets/sounds/backgroundSound.mp3'
 import Controls from '../../components/controls/Controls'
 import TopCombine from '../../components/topCombines/TopCombine'
 import { RootState } from '../../store/store'
@@ -11,8 +9,6 @@ import { decreaseBalance } from '../../store/user/stats.slice'
 import { diamondsCombines } from '../../utils/combines'
 import { diamondChecker } from '../../utils/diamondsUtils'
 import { updateLosesBalances } from '../../utils/statsUtils'
-
-//@ts-ignore
 
 const Diamonds = () => {
 	const items: string[] = ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯'] // ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯']
@@ -38,16 +34,23 @@ const Diamonds = () => {
 
 	const { balances } = useSelector((state: RootState) => state.stats)
 
-	// const [fanfareOfVictory] = useSound(fanfares)
-	const [backgroundSounds, { stop }] = useSound(backgroundSound, { loop: true })
-
 	useEffect(() => {
-		backgroundSounds()
+		const audio = new Audio('/src/assets/sounds/backgroundSound.mp3')
 
-		return () => {
-			stop()
+		const playSound = () => {
+			audio.play()
 		}
-	}, [backgroundSounds, stop])
+
+		const stopSound = () => {
+			audio.pause()
+			audio.currentTime = 0
+		}
+
+		playSound()
+		return () => {
+			stopSound()
+		}
+	}, [])
 
 	const updateItems = () => {
 		const delay = 150
