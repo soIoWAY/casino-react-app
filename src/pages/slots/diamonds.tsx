@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import useSound from 'use-sound'
 import Layout from '../../app/Layout'
+import backgroundSound from '../../assets/sounds/backgroundSound.mp3'
 import Controls from '../../components/controls/Controls'
 import TopCombine from '../../components/topCombines/TopCombine'
 import { RootState } from '../../store/store'
@@ -33,6 +35,17 @@ const Diamonds = () => {
 	const dispatch = useDispatch()
 
 	const { balances } = useSelector((state: RootState) => state.stats)
+
+	// const [fanfareOfVictory] = useSound(fanfares)
+	const [backgroundSounds, { stop }] = useSound(backgroundSound, { loop: true })
+
+	useEffect(() => {
+		backgroundSounds()
+
+		return () => {
+			stop()
+		}
+	}, [backgroundSounds, stop])
 
 	const updateItems = () => {
 		const delay = 150
