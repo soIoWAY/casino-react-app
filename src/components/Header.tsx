@@ -96,12 +96,14 @@ const Header = () => {
 							/>
 						</div>
 					)}
-					<div className='font-semibold w-9'>
-						<span>{balances}₴</span>
+					<div className='flex items-center'>
+						<div className='font-semibold inline-block min-w-[2.25rem] mr-1'>
+							<span>{balances}₴</span>
+						</div>
+						<button className='text-2xl text-red-600'>
+							<PiPlusCircleFill />
+						</button>
 					</div>
-					<button className='text-2xl text-red-600'>
-						<PiPlusCircleFill />
-					</button>
 				</div>
 			) : (
 				<div className='space-x-6'>

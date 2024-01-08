@@ -29,8 +29,8 @@ const UserMenu = ({ nickname, wins, loses }: IUserMenuProps) => {
 				<h4 className='font-bold'>{nickname}</h4>
 			</div>
 			<div className='user-menu_body flex flex-col justify-center items-center p-1'>
-				<span>Wins: {wins}</span>
-				<span>Loses: {loses}</span>
+				<span>Wins: {wins !== null && wins > 999 ? '999+' : wins}</span>
+				<span>Loses: {loses !== null && loses > 999 ? '999+' : loses}</span>
 			</div>
 			<div className='user-menu_footer border-t-2 font-bold text-center'>
 				<button onClick={logoutHandler}>

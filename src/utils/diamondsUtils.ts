@@ -29,7 +29,6 @@ const combines = {
 	fanfareOfVictory: 4, // 📯📯📯 - х3 Fanfare of Victory
 	classic: 2,
 }
-
 export const diamondChecker: DiamondCheckerFunction = (
 	items,
 	db,
