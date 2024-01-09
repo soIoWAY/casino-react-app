@@ -47,7 +47,7 @@ const Diamonds = () => {
 		return () => {
 			stop()
 		}
-	}, [])
+	}, [backgroundMusic, stop])
 
 	const updateItems = () => {
 		const delay = 150
