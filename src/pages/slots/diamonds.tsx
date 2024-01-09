@@ -10,6 +10,10 @@ import { diamondsCombines } from '../../utils/combines'
 import { diamondChecker } from '../../utils/diamondsUtils'
 import { updateLosesBalances } from '../../utils/statsUtils'
 
+import bckgMusic from '../../assets/sounds/backgroundSound.mp3'
+//@ts-ignore
+import useSound from 'use-sound'
+
 const Diamonds = () => {
 	const items: string[] = ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯'] // ['💎', '⚔️', '🗡', '👑', '🏰', '☠️', '🛡', '📯']
 	const randomItems: () => number = () => {
@@ -34,22 +38,13 @@ const Diamonds = () => {
 
 	const { balances } = useSelector((state: RootState) => state.stats)
 
+	const [backgroundMusic, { stop }] = useSound(bckgMusic, { loop: true })
+
 	useEffect(() => {
-		const audio = new Audio('/src/assets/sounds/backgroundSound.mp3')
-		audio.loop = true
+		backgroundMusic()
 
-		const playSound = () => {
-			audio.play()
-		}
-
-		const stopSound = () => {
-			audio.pause()
-			audio.currentTime = 0
-		}
-
-		playSound()
 		return () => {
-			stopSound()
+			stop()
 		}
 	}, [])
 
