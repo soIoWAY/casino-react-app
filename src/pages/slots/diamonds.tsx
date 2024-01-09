@@ -10,6 +10,7 @@ import { diamondsCombines } from '../../utils/combines'
 import { diamondChecker } from '../../utils/diamondsUtils'
 import { updateLosesBalances } from '../../utils/statsUtils'
 
+//@ts-ignore
 import bckgMusic from '../../assets/sounds/backgroundSound.mp3'
 //@ts-ignore
 import useSound from 'use-sound'
