@@ -14,7 +14,7 @@ type DiamondCheckerFunction = (
 	uid: string | null,
 	dispatch: Dispatch,
 	userBet: number,
-	slotSounds: unknown,
+	slotSounds: any,
 	topCombineDelay: () => void
 ) => void
 

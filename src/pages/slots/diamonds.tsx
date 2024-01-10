@@ -50,7 +50,7 @@ const Diamonds = () => {
 
 	const [backgroundMusic, { stop }] = useSound(bckgMusic, {
 		loop: true,
-		volume: 0.5,
+		volume: 0.4,
 	})
 	const [diamondsSound] = useSound(diamondsSounds, { volume: 0.35 })
 	const [royalTriumphSound] = useSound(royalSounds, { volume: 0.35 })
