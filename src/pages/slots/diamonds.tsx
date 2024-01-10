@@ -73,14 +73,6 @@ const Diamonds = () => {
 		crownJewelsSound,
 	}
 
-	useEffect(() => {
-		backgroundMusic()
-
-		return () => {
-			stop()
-		}
-	}, [backgroundMusic, stop])
-
 	const updateItems = () => {
 		const delay = 145
 
