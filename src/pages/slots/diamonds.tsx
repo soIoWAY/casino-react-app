@@ -10,7 +10,6 @@ import { diamondsCombines } from '../../utils/combines'
 import { diamondChecker } from '../../utils/diamondsUtils'
 import { updateLosesBalances } from '../../utils/statsUtils'
 
-import bckgMusic from '../../assets/sounds/backgroundSound.mp3'
 import castleDefenseSounds from '../../assets/sounds/diamonds/castleDefenseSounds.mp3'
 import crownJewelsSounds from '../../assets/sounds/diamonds/crownJewelsSounds.mp3'
 import danceOfSwordSounds from '../../assets/sounds/diamonds/danceOfSwordSounds.mp3'
@@ -48,10 +47,6 @@ const Diamonds = () => {
 
 	const { balances } = useSelector((state: RootState) => state.stats)
 
-	const [backgroundMusic, { stop }] = useSound(bckgMusic, {
-		loop: true,
-		volume: 0.4,
-	})
 	const [diamondsSound] = useSound(diamondsSounds, { volume: 0.35 })
 	const [royalTriumphSound] = useSound(royalSounds, { volume: 0.35 })
 	const [castleDefenseSound] = useSound(castleDefenseSounds, { volume: 0.35 })
