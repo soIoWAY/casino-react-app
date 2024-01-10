@@ -1,7 +1,6 @@
-import Game from './Game'
 import cherrySlot from '../../assets/cherry.png'
-import classicSlot from '../../assets/classic.png'
 import diamondSlot from '../../assets/diamond-slot.png'
+import Game from './Game'
 
 const gamesList = [
 	{
@@ -13,11 +12,6 @@ const gamesList = [
 		title: 'cherrys',
 		img: cherrySlot,
 		href: '/slots/cherrys',
-	},
-	{
-		title: 'classic',
-		img: classicSlot,
-		href: '/slots/classic',
 	},
 ]
 
