@@ -1,5 +1,5 @@
 import { Firestore, getFirestore } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBalance, fetchStats } from '../utils/statsUtils'
 
@@ -60,6 +60,15 @@ const Header = () => {
 
 	const nickname = useConvertEmail(email)
 
+	const balanceRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		if (balanceRef.current) {
+			const width = balanceRef.current.offsetWidth
+			balanceRef.current.style.width = `${width}px`
+		}
+	}, [balances])
+
 	return (
 		<div className='flex justify-between items-center w-full flex-wrap mx-auto px-6 md:px-12 py-6 bg-[#1C1632] shadow-lg'>
 			<Link to='/'>
@@ -84,7 +93,7 @@ const Header = () => {
 						</div>
 					)}
 					<div className='flex items-center'>
-						<div className='font-semibold inline-block min-w-[2.25rem] mr-1'>
+						<div className='font-semibold inline-block mr-1' ref={balanceRef}>
 							<span>{balances}₴</span>
 						</div>
 						<button className='text-2xl text-red-600'>

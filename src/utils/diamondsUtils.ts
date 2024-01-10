@@ -13,7 +13,9 @@ type DiamondCheckerFunction = (
 	db: Firestore | null,
 	uid: string | null,
 	dispatch: Dispatch,
-	userBet: number
+	userBet: number,
+	slotSounds: unknown,
+	topCombineDelay: () => void
 ) => void
 
 const combines = {
@@ -34,30 +36,53 @@ export const diamondChecker: DiamondCheckerFunction = (
 	db,
 	uid,
 	dispatch,
-	userBet
+	userBet,
+	slotSounds,
+	topCombineDelay
 ) => {
 	if (items.every(item => item === '💎')) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.diamondFortune)
+		slotSounds.diamondsSound()
+		topCombineDelay()
 	} else if (items.every(item => item === '👑')) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.royalTriumph)
+		slotSounds.royalTriumphSound()
+		topCombineDelay()
 	} else if (items[0] === '🛡' && items[1] === '🏰' && items[2] === '📯') {
 		winCombineFunction(db, uid, dispatch, userBet * combines.castleDefense)
+		slotSounds.castleDefenseSound()
+		topCombineDelay()
 	} else if (items[0] === '⚔️' && items[1] === '🗡' && items[2] === '☠️') {
 		winCombineFunction(db, uid, dispatch, userBet * combines.epicBattle)
+		slotSounds.epicBattleSound()
+		topCombineDelay()
 	} else if (items.every(item => item === '🗡')) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.swordDance)
+		slotSounds.danceOfSwordSound()
+		topCombineDelay()
 	} else if (items.every(item => item === '🏰')) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.fortressStone)
+		slotSounds.fortressStoneSound()
+		topCombineDelay()
 	} else if (items.every(item => item === '☠️')) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.deadlyTrio)
+		slotSounds.deadlyTrioSound()
+		topCombineDelay()
 	} else if (items[0] === '👑' && items[1] === items[0] && items[2] === '🛡') {
 		winCombineFunction(db, uid, dispatch, userBet * combines.regalDefence)
+		slotSounds.regalDefenseSound()
+		topCombineDelay()
 	} else if (items[0] === '💎' && items[1] === items[0] && items[2] === '👑') {
 		winCombineFunction(db, uid, dispatch, userBet * combines.crownJewels)
+		slotSounds.crownJewelsSound()
+		topCombineDelay()
 	} else if (items.every(item => item === '📯')) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.fanfareOfVictory)
+		slotSounds.fanfareOfVictorySound()
+		topCombineDelay()
 	} else if (items[0] === items[1] || items[1] === items[2]) {
 		winCombineFunction(db, uid, dispatch, userBet * combines.classic)
+		slotSounds.crownJewelsSound()
 	} else {
 		loseFunction(db, uid, dispatch)
 	}

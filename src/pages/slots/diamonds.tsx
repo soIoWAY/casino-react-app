@@ -10,8 +10,17 @@ import { diamondsCombines } from '../../utils/combines'
 import { diamondChecker } from '../../utils/diamondsUtils'
 import { updateLosesBalances } from '../../utils/statsUtils'
 
-//@ts-ignore
 import bckgMusic from '../../assets/sounds/backgroundSound.mp3'
+import castleDefenseSounds from '../../assets/sounds/diamonds/castleDefenseSounds.mp3'
+import crownJewelsSounds from '../../assets/sounds/diamonds/crownJewelsSounds.mp3'
+import danceOfSwordSounds from '../../assets/sounds/diamonds/danceOfSwordSounds.mp3'
+import deadlyTrioSounds from '../../assets/sounds/diamonds/deadlyTrioSounds.mp3'
+import diamondsSounds from '../../assets/sounds/diamonds/diamondsSounds.mp3'
+import epicBattleSounds from '../../assets/sounds/diamonds/epicBattleSounds.mp3'
+import fanfareOfVictorySounds from '../../assets/sounds/diamonds/fanfareOfVictorySounds.mp3'
+import fortressStoneSounds from '../../assets/sounds/diamonds/fortressSroneSounds.mp3'
+import regalDefenseSounds from '../../assets/sounds/diamonds/regalDefenseSounds.mp3'
+import royalSounds from '../../assets/sounds/diamonds/royalSounds.mp3'
 //@ts-ignore
 import useSound from 'use-sound'
 
@@ -39,7 +48,35 @@ const Diamonds = () => {
 
 	const { balances } = useSelector((state: RootState) => state.stats)
 
-	const [backgroundMusic, { stop }] = useSound(bckgMusic, { loop: true })
+	const [backgroundMusic, { stop }] = useSound(bckgMusic, {
+		loop: true,
+		volume: 0.5,
+	})
+	const [diamondsSound] = useSound(diamondsSounds, { volume: 0.35 })
+	const [royalTriumphSound] = useSound(royalSounds, { volume: 0.35 })
+	const [castleDefenseSound] = useSound(castleDefenseSounds, { volume: 0.35 })
+	const [epicBattleSound] = useSound(epicBattleSounds, { volume: 0.35 })
+	const [danceOfSwordSound] = useSound(danceOfSwordSounds, { volume: 0.35 })
+	const [fortressStoneSound] = useSound(fortressStoneSounds, { volume: 0.35 })
+	const [deadlyTrioSound] = useSound(deadlyTrioSounds, { volume: 0.35 })
+	const [fanfareOfVictorySound] = useSound(fanfareOfVictorySounds, {
+		volume: 0.35,
+	})
+	const [regalDefenseSound] = useSound(regalDefenseSounds, { volume: 0.35 })
+	const [crownJewelsSound] = useSound(crownJewelsSounds, { volume: 0.35 })
+
+	const slotSounds = {
+		diamondsSound,
+		royalTriumphSound,
+		castleDefenseSound,
+		epicBattleSound,
+		danceOfSwordSound,
+		fortressStoneSound,
+		deadlyTrioSound,
+		fanfareOfVictorySound,
+		regalDefenseSound,
+		crownJewelsSound,
+	}
 
 	useEffect(() => {
 		backgroundMusic()
@@ -50,7 +87,7 @@ const Diamonds = () => {
 	}, [backgroundMusic, stop])
 
 	const updateItems = () => {
-		const delay = 150
+		const delay = 145
 
 		if (isNaN(userBet)) {
 			setUserBet(0)
@@ -86,10 +123,25 @@ const Diamonds = () => {
 		}
 	}
 
+	const topCombineDelay = () => {
+		setDisabled(true)
+		setTimeout(() => {
+			setDisabled(false)
+		}, 3500)
+	}
+
 	useEffect(() => {
 		if (!isAnimating && isAnimatingCompleted) {
 			const items = [item1, item2, item3]
-			diamondChecker(items, db, uid, dispatch, userBet)
+			diamondChecker(
+				items,
+				db,
+				uid,
+				dispatch,
+				userBet,
+				slotSounds,
+				topCombineDelay
+			)
 		}
 	}, [
 		item1,
@@ -105,6 +157,7 @@ const Diamonds = () => {
 	return (
 		<div>
 			<Layout>
+				{/* components */}
 				<div className='flex flex-col items-center justify-center h-[75vh]'>
 					<div className='game border-2 rounded-md w-9/12 md:w-4/12 py-12 md:py-16 flex justify-center md:h-8/12'>
 						<div className='text-5xl md:text-6xl flex justify-center  items-center border-red-600 border-t-2 border-b-2 py-3'>
