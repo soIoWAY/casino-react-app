@@ -8,7 +8,7 @@ import manu from '../../assets/football/manu.png'
 import realm from '../../assets/football/realmadrid.png'
 import TopEvent from './TopEvent'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TopEventsHeader from './TopEventsHeader'
 
 const events = [
@@ -68,6 +68,8 @@ const TopEventsList = () => {
 	const [startIndex, setStartIndex] = useState(0)
 	const [eventsPerPage, setEventsPerPage] = useState(3)
 
+	const resizeInProgress = useRef(false)
+
 	useEffect(() => {
 		const resizeHandler = () => {
 			if (window.innerWidth >= 1024) {
@@ -79,12 +81,22 @@ const TopEventsList = () => {
 			}
 		}
 
-		window.addEventListener('resize', resizeHandler)
+		const throttledResizeHandler = () => {
+			if (!resizeInProgress.current) {
+				resizeInProgress.current = true
+				requestAnimationFrame(() => {
+					resizeHandler()
+					resizeInProgress.current = false
+				})
+			}
+		}
+
+		window.addEventListener('resize', throttledResizeHandler)
 
 		resizeHandler()
 
 		return () => {
-			window.removeEventListener('resize', resizeHandler)
+			window.removeEventListener('resize', throttledResizeHandler)
 		}
 	}, [])
 
