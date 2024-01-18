@@ -13,6 +13,7 @@ import { RootState } from '../../store/store'
 import { setStats } from '../../store/user/stats.slice'
 import UserMenu from '../userMenu/UserMenu'
 import Balance from './Balance'
+import DepositModal from './DepositModal'
 import Navbar from './Navbar'
 
 const Header = () => {
@@ -58,8 +59,16 @@ const Header = () => {
 
 	const nickname = useConvertEmail(email)
 
+	const [isModalOpen, setIsModalOpen] = useState(false)
+
+	const openModal = () => {
+		setIsModalOpen(true)
+	}
+	const closeModal = () => {
+		setIsModalOpen(false)
+	}
 	return (
-		<div className='flex justify-between items-center w-full flex-wrap mx-auto px-6 md:px-12 py-6 bg-[#1C1632] shadow-lg'>
+		<div className='flex justify-between items-center w-full flex-wrap mx-auto px-6 md:px-12 py-6 bg-[#1C1632] shadow-lg h-20'>
 			<Link to='/'>
 				<h1 className='text-2xl font-bold'>
 					7<span className='text-red-600'>Kings</span>
@@ -83,7 +92,7 @@ const Header = () => {
 					)}
 					<div className='flex items-center'>
 						<Balance />
-						<button className='text-2xl text-red-600'>
+						<button className='text-2xl text-red-600' onClick={openModal}>
 							<PiPlusCircleFill />
 						</button>
 					</div>
@@ -104,6 +113,8 @@ const Header = () => {
 					</Link>
 				</div>
 			)}
+			{/* <DepositModal isOpen={isModalOpen} closeModal={closeModal} /> */}
+			{isModalOpen && <DepositModal closeModal={closeModal} />}
 		</div>
 	)
 }

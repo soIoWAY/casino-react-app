@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 interface ITopEvent {
 	league: string
 	team1Name: string
@@ -24,6 +26,11 @@ const TopEvent = ({
 	date,
 }: ITopEvent) => {
 	const cmnStyles = 'bg-[#3b3350] p-1 rounded-md hover:bg-red-600 transition'
+	const [isModalOpen, setIsModalOpen] = useState(false)
+
+	const openModal = () => {
+		setIsModalOpen(!isModalOpen)
+	}
 	return (
 		<div className='flex flex-col bg-[#1C1632] w-[90%] md:w-2/5 lg:w-1/4 rounded-md py-2 px-6 mt-3'>
 			<div className='border-b-2 pb-1 flex text-xl md:text-lg font-bold items-center justify-between'>
@@ -45,9 +52,15 @@ const TopEvent = ({
 				</div>
 			</div>
 			<div className='flex justify-between mt-2 px-1 lg:text-[15px]'>
-				<button className={cmnStyles}>1 | {coeff1}</button>
-				<button className={cmnStyles}>X | {x}</button>
-				<button className={cmnStyles}>2 | {coeff2}</button>
+				<button className={cmnStyles} onClick={openModal}>
+					1 | {coeff1}
+				</button>
+				<button className={cmnStyles} onClick={openModal}>
+					X | {x}
+				</button>
+				<button className={cmnStyles} onClick={openModal}>
+					2 | {coeff2}
+				</button>
 			</div>
 		</div>
 	)
