@@ -9,7 +9,7 @@ const DepositModal = ({ closeModal }: IDepositModal) => {
 	const inputStyles =
 		'bg-transparent border border-red-600 text-white rounded-md p-1 outline-none'
 	const combinedInputStyles = classNames('w-20', inputStyles)
-	const [cardHolder, setCardHolder] = useState('Unknown Unknown')
+	const [cardHolder, setCardHolder] = useState('Unknown')
 	const [cardNumber, setCardNumber] = useState('0000000000000000')
 	const [cardMonth, setCardMonth] = useState('00')
 	const [cardYear, setCardYear] = useState('00')
@@ -23,14 +23,14 @@ const DepositModal = ({ closeModal }: IDepositModal) => {
 
 	return (
 		<div className='fixed top-0 left-0 bg-black bg-opacity-75 h-screen w-full flex items-center justify-center'>
-			<div className='bg-[#0f051e] w-2/5 mx-auto flex flex-col h-4/6 px-3'>
+			<div className='bg-[#0f051e] mx-auto flex flex-col h-4/6 px-3 lg:w-[35%] md:w-[55%] sm:w-[70%] w-[90%]'>
 				<div className='flex justify-end mt-1'>
 					<button className='text-xl' onClick={closeModal}>
 						x
 					</button>
 				</div>
 				<div className='text-white flex flex-col items-center'>
-					<div className='w-3/5 p-3 rounded-md border border-red-600 bg-[#1C1632]'>
+					<div className='p-3 rounded-md border border-red-600 bg-[#1C1632] lg:w-[78%] md:w-[75%] sm:w-[78%] w-full'>
 						<div className='text-5xl'>
 							<LiaCcVisa />
 						</div>
@@ -43,7 +43,7 @@ const DepositModal = ({ closeModal }: IDepositModal) => {
 						<div className='flex justify-between mt-5'>
 							<div className='flex flex-col'>
 								<span>Card Holder</span>
-								<span className='uppercase'>{cardHolder}</span>
+								<span className='uppercase'>{cardHolder.split(' ')[0]}</span>
 							</div>
 							<div className='flex gap-6'>
 								<div className='flex flex-col'>
