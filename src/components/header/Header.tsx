@@ -13,8 +13,8 @@ import { RootState } from '../../store/store'
 import { setStats } from '../../store/user/stats.slice'
 import UserMenu from '../userMenu/UserMenu'
 import Balance from './Balance'
-import DepositModal from './DepositModal'
 import Navbar from './Navbar'
+import DepositModal from './modalDeposit/DepositModal'
 
 const Header = () => {
 	const { uid, email } = useSelector((state: RootState) => state.user)
