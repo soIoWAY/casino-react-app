@@ -34,10 +34,8 @@ const DepositModal = ({ closeModal }: IDepositModal) => {
 						setCardMonth={setCardMonth}
 						setCardYear={setCardYear}
 						setCardCVV={setCardCVV}
+						closeModal={closeModal}
 					/>
-					<button className='bg-red-600 px-5 py-2 uppercase mt-5 rounded-md'>
-						Deposit
-					</button>
 				</div>
 			</div>
 		</div>
