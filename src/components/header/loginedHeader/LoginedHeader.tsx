@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { CgProfile } from 'react-icons/cg'
 import { PiPlusCircleFill } from 'react-icons/pi'
 import useConvertEmail from '../../../hooks/useConvertEmail'
-import UserMenu from '../../userMenu/UserMenu'
 import Balance from '../Balance'
+import UserMenu from '../userMenu/UserMenu'
 
 interface ILoginedHeader {
 	email: null | string

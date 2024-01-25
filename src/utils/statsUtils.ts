@@ -6,6 +6,30 @@ import {
 	setDoc,
 } from 'firebase/firestore'
 
+import { Dispatch } from '@reduxjs/toolkit'
+import { setAdmin } from '../store/admin/admin.slice'
+
+export const fetchAdminStatus = async (
+	db: Firestore,
+	uid: string,
+	dispatch: Dispatch
+) => {
+	try {
+		if (db && uid) {
+			const adminsDocRef = doc(db, 'admins', uid)
+			const adminsDocSnap = await getDoc(adminsDocRef)
+			if (adminsDocSnap.exists()) {
+				const data = adminsDocSnap.data() as DocumentData
+				dispatch(setAdmin({ isAdmin: data.isAdmin }))
+			} else {
+				await setDoc(doc(db, 'admins', uid), { isAdmin: false })
+			}
+		}
+	} catch (err) {
+		console.error(err)
+	}
+}
+
 export const fetchBalance = async (
 	db: Firestore,
 	uid: string,

@@ -1,7 +1,11 @@
 import { Firestore, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchBalance, fetchStats } from '../../utils/statsUtils'
+import {
+	fetchAdminStatus,
+	fetchBalance,
+	fetchStats,
+} from '../../utils/statsUtils'
 
 import { Link } from 'react-router-dom'
 import { initializeFirebase } from '../../../firebase'
@@ -19,13 +23,8 @@ const Header = () => {
 	const [win, setWin] = useState<number | null>(null)
 	const [lose, setLose] = useState<number | null>(null)
 	const [db, setDb] = useState<Firestore | null>(null)
-	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
 	const dispatch = useDispatch()
-
-	const openUserMenuHandler = () => {
-		setIsUserMenuOpen(!isUserMenuOpen)
-	}
 
 	useEffect(() => {
 		dispatch(setDB({ db: db }))
@@ -51,6 +50,7 @@ const Header = () => {
 		if (db && uid) {
 			fetchBalance(db, uid, setBalance)
 			fetchStats(db, uid, setWin, setLose)
+			fetchAdminStatus(db, uid, dispatch)
 		}
 	}, [db, uid])
 
