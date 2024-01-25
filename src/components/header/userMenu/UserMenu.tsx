@@ -4,7 +4,6 @@ import { RootState } from '../../../store/store'
 import { setUser } from '../../../store/user/user.slice'
 import { logoutUser } from '../../../utils/authUtils'
 import AdminMenu from './adminMenu/AdminMenu'
-
 interface IUserMenuProps {
 	nickname: string | null
 }
@@ -46,7 +45,7 @@ const UserMenu = ({ nickname }: IUserMenuProps) => {
 			{isAdmin && (
 				<div className='border-t-2 font-bold text-center pb-1'>
 					<button onClick={openAdminHandler}>
-						<span className='text-red-600'>Admin</span>
+						<span className='text-red-600 uppercase'>Admin</span>
 					</button>
 				</div>
 			)}
