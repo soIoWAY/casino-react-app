@@ -3,17 +3,14 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBalance, fetchStats } from '../../utils/statsUtils'
 
-import { CgProfile } from 'react-icons/cg'
-import { PiPlusCircleFill } from 'react-icons/pi'
 import { Link } from 'react-router-dom'
 import { initializeFirebase } from '../../../firebase'
-import useConvertEmail from '../../hooks/useConvertEmail'
 import { setDB } from '../../store/db/db.slice'
 import { RootState } from '../../store/store'
 import { setStats } from '../../store/user/stats.slice'
-import UserMenu from '../userMenu/UserMenu'
-import Balance from './Balance'
 import Navbar from './Navbar'
+import LoginedHeader from './loginedHeader/LoginedHeader'
+import UnloginedHeader from './loginedHeader/UnloginedHeader'
 import DepositModal from './modalDeposit/DepositModal'
 
 const Header = () => {
@@ -57,8 +54,6 @@ const Header = () => {
 		}
 	}, [db, uid])
 
-	const nickname = useConvertEmail(email)
-
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const openModal = () => {
@@ -78,42 +73,10 @@ const Header = () => {
 				<Navbar />
 			</div>
 			{uid ? (
-				<div className='flex gap-2 items-center'>
-					<button
-						className='text-3xl border-r-2 pr-2 cursor-pointer'
-						onClick={openUserMenuHandler}
-					>
-						<CgProfile />
-					</button>
-					{isUserMenuOpen && (
-						<div className='absolute shadow-md mt-3 right-26 top-14'>
-							<UserMenu nickname={nickname} />
-						</div>
-					)}
-					<div className='flex items-center'>
-						<Balance />
-						<button className='text-2xl text-red-600' onClick={openModal}>
-							<PiPlusCircleFill />
-						</button>
-					</div>
-				</div>
+				<LoginedHeader email={email} openModal={openModal} />
 			) : (
-				<div className='space-x-6'>
-					<Link
-						to='/login'
-						className='bg-red-600 px-6 md:px-8 py-2 rounded-md text-white'
-					>
-						Log In
-					</Link>
-					<Link
-						to='/register'
-						className='border px-6 md:px-8 py-2 rounded-md md:inline-block hidden'
-					>
-						Register
-					</Link>
-				</div>
+				<UnloginedHeader />
 			)}
-			{/* <DepositModal isOpen={isModalOpen} closeModal={closeModal} /> */}
 			{isModalOpen && <DepositModal closeModal={closeModal} />}
 		</div>
 	)
