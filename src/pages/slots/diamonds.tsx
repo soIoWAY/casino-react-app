@@ -41,7 +41,7 @@ const Diamonds = () => {
 	const [userBet, setUserBet] = useState(0)
 
 	const { db } = useSelector((state: RootState) => state.db)
-	const { uid } = useSelector((state: RootState) => state.user)
+	const { uid, email } = useSelector((state: RootState) => state.user)
 
 	const dispatch = useDispatch()
 
@@ -86,7 +86,7 @@ const Diamonds = () => {
 			alert('Недостатньо коштів на балансів')
 		} else {
 			const animate = () => {
-				updateLosesBalances(db, uid, userBet)
+				updateLosesBalances(db, email, userBet)
 				dispatch(decreaseBalance(userBet))
 				setIsAnimating(true)
 				setDisabled(true)
@@ -123,7 +123,7 @@ const Diamonds = () => {
 			diamondChecker(
 				items,
 				db,
-				uid,
+				email,
 				dispatch,
 				userBet,
 				slotSounds,

@@ -47,12 +47,12 @@ const Header = () => {
 	}, [dispatch, balance, win, lose])
 
 	useEffect(() => {
-		if (db && uid) {
-			fetchBalance(db, uid, setBalance)
-			fetchStats(db, uid, setWin, setLose)
-			fetchAdminStatus(db, uid, dispatch)
+		if (db && email) {
+			fetchBalance(db, email, setBalance)
+			fetchStats(db, email, setWin, setLose)
+			fetchAdminStatus(db, email, dispatch)
 		}
-	}, [db, uid])
+	}, [db, email])
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 

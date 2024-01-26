@@ -31,14 +31,14 @@ const DepositModalForm = ({
 	const dispatch = useDispatch()
 
 	const { db } = useSelector((state: RootState) => state.db)
-	const { uid } = useSelector((state: RootState) => state.user)
+	const { email } = useSelector((state: RootState) => state.user)
 
 	const deposit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
 		try {
 			dispatch(increaseBalance(depositSum))
-			updateWinBalances(db, uid, depositSum)
+			updateWinBalances(db, email, depositSum)
 		} catch (err) {
 			console.error(err)
 		}
