@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../../store/store'
-import getUidByEmail, { fetchTotalGame } from '../../../../utils/adminUtils'
+import { fetchTotalGame } from '../../../../utils/adminUtils'
 import AdminMenuRow from './AdminMenuRow'
 
 interface IAdminMenu {
@@ -13,22 +13,10 @@ const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
 	const { db } = useSelector((state: RootState) => state.db)
 
 	const [totalGames, setTotalGames] = useState({ wins: 0, loses: 0, total: 0 })
-	const [userEmail, setUserEmail] = useState('user@gmail.com')
-	const defaultEmail = 'user@gmail.com'
 
 	useEffect(() => {
 		fetchTotalGame(db, setTotalGames)
 	}, [])
-
-	const fetchUserUid = (email: string) => {
-		getUidByEmail(email).then(uid => {
-			if (uid) {
-				console.log(uid)
-			} else {
-				console.log('no users')
-			}
-		})
-	}
 
 	return (
 		<div className='fixed top-0 left-0 bg-black bg-opacity-75 h-screen w-full flex items-center justify-center'>
@@ -43,19 +31,27 @@ const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
 					<AdminMenuRow title='Win Games' games={totalGames.wins} />
 					<AdminMenuRow title='Lose Games' games={totalGames.loses} />
 					<div className='flex flex-col items-center gap-2 border-t-2 border-red-600 pt-3'>
-						<input
-							type='text'
-							placeholder='email'
-							className='rounded-md bg-transparent border-red-600 border-2 py-2 outline-none text-center'
-							maxLength={32}
-							onChange={e => setUserEmail(e.target.value)}
-						/>
-						<span>{userEmail || defaultEmail}</span>
-						<button
-							className='bg-red-600 px-8 py-2 rounded-md font-bold'
-							onClick={() => fetchUserUid(userEmail)}
-						>
-							Get UID
+						<form>
+							<div className='flex flex-col items-center gap-2'>
+								<div className='flex gap-2'>
+									<input
+										type='text'
+										className='w-30 bg-transparent border-red-600 border-2 outline-none text-center'
+										placeholder='email'
+									/>
+									<input
+										type='number'
+										className='w-14 bg-transparent border-red-600 border-2 outline-none text-center'
+										placeholder='sum'
+									/>
+								</div>
+								<button className='bg-red-600 w-36 h-9 rounded-md font-semibold'>
+									Add balance
+								</button>
+							</div>
+						</form>
+						<button className='bg-red-600 w-40 h-10 rounded-md font-bold'>
+							Remove balance
 						</button>
 					</div>
 				</div>
