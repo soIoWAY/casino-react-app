@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../../store/store'
-import { fetchTotalGame } from '../../../../utils/adminUtils'
+import {
+	addUserBalance,
+	fetchTotalGame,
+	reduceUserBalance,
+} from '../../../../utils/adminUtils'
+import AdminForm from './AdminForm'
 import AdminMenuRow from './AdminMenuRow'
 
 interface IAdminMenu {
@@ -9,14 +14,30 @@ interface IAdminMenu {
 }
 
 const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
-	// const { uid } = useSelector((state: RootState) => state.user)
 	const { db } = useSelector((state: RootState) => state.db)
 
 	const [totalGames, setTotalGames] = useState({ wins: 0, loses: 0, total: 0 })
 
+	const [formData, setFormData] = useState({ email: '', amount: 0 })
+
 	useEffect(() => {
 		fetchTotalGame(db, setTotalGames)
 	}, [])
+
+	const balanceFormSubmitHandler = (
+		e: React.FormEvent<HTMLFormElement>,
+		action: 'increase' | 'reduce'
+	) => {
+		e.preventDefault()
+		if (formData.email && formData.amount) {
+			if (action === 'increase') {
+				addUserBalance(db, formData.email, formData.amount)
+			} else {
+				reduceUserBalance(db, formData.email, formData.amount)
+			}
+			setFormData({ email: '', amount: 0 })
+		}
+	}
 
 	return (
 		<div className='fixed top-0 left-0 bg-black bg-opacity-75 h-screen w-full flex items-center justify-center'>
@@ -31,28 +52,18 @@ const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
 					<AdminMenuRow title='Win Games' games={totalGames.wins} />
 					<AdminMenuRow title='Lose Games' games={totalGames.loses} />
 					<div className='flex flex-col items-center gap-2 border-t-2 border-red-600 pt-3'>
-						<form>
-							<div className='flex flex-col items-center gap-2'>
-								<div className='flex gap-2'>
-									<input
-										type='text'
-										className='w-30 bg-transparent border-red-600 border-2 outline-none text-center'
-										placeholder='email'
-									/>
-									<input
-										type='number'
-										className='w-14 bg-transparent border-red-600 border-2 outline-none text-center'
-										placeholder='sum'
-									/>
-								</div>
-								<button className='bg-red-600 w-36 h-9 rounded-md font-semibold'>
-									Add balance
-								</button>
-							</div>
-						</form>
-						<button className='bg-red-600 w-40 h-10 rounded-md font-bold'>
-							Remove balance
-						</button>
+						<AdminForm
+							onSubmit={e => balanceFormSubmitHandler(e, 'increase')}
+							formData={formData}
+							setFormData={setFormData}
+							btnText='Increase Balance'
+						/>
+						<AdminForm
+							onSubmit={e => balanceFormSubmitHandler(e, 'reduce')}
+							formData={formData}
+							setFormData={setFormData}
+							btnText='Reduce Balance'
+						/>
 					</div>
 				</div>
 			</div>
