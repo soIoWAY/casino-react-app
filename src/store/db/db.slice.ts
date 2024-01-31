@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-
-import { Firestore } from 'firebase/firestore'
+import { Database } from 'firebase/database'
 
 interface IDBState {
-	db: Firestore | null
+	db: Database | null
 }
 
 const initialState: IDBState = {

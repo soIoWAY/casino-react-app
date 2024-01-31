@@ -6,6 +6,8 @@ const firebaseConfig = {
 	storageBucket: 'casino-app-54eb7.appspot.com',
 	messagingSenderId: '929159969882',
 	appId: '1:929159969882:web:0aeee907d90aae5759ac63',
+	databaseURL:
+		'https://casino-app-54eb7-default-rtdb.europe-west1.firebasedatabase.app',
 }
 
 let firebaseApp: FirebaseApp

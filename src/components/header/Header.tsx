@@ -1,4 +1,3 @@
-import { Firestore, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -7,8 +6,10 @@ import {
 	fetchStats,
 } from '../../utils/statsUtils'
 
+import { Database, getDatabase } from '@firebase/database'
 import { Link } from 'react-router-dom'
 import { initializeFirebase } from '../../../firebase'
+import { setAdmin } from '../../store/admin/admin.slice'
 import { setDB } from '../../store/db/db.slice'
 import { RootState } from '../../store/store'
 import { setStats } from '../../store/user/stats.slice'
@@ -20,9 +21,9 @@ import DepositModal from './modalDeposit/DepositModal'
 const Header = () => {
 	const { uid, email } = useSelector((state: RootState) => state.user)
 	const [balance, setBalance] = useState<number | null>(null)
-	const [win, setWin] = useState<number | null>(null)
-	const [lose, setLose] = useState<number | null>(null)
-	const [db, setDb] = useState<Firestore | null>(null)
+	const [userIsAdmin, setUserIsAdmin] = useState(null)
+	const [userStats, setUserStats] = useState({ wins: null, loses: null })
+	const [db, setDb] = useState<Database | null>(null)
 
 	const dispatch = useDispatch()
 
@@ -32,27 +33,50 @@ const Header = () => {
 
 	useEffect(() => {
 		const firebaseApp = initializeFirebase()
-		const firestore: Firestore = getFirestore(firebaseApp)
-		setDb(firestore)
+		const db: Database = getDatabase(firebaseApp)
+		setDb(db)
 	}, [])
 
 	useEffect(() => {
-		dispatch(
-			setStats({
-				balances: balance,
-				wins: win,
-				loses: lose,
-			})
-		)
-	}, [dispatch, balance, win, lose])
+		if (balance !== null) {
+			dispatch(
+				setStats({
+					balances: balance,
+					wins: userStats.wins,
+					loses: userStats.loses,
+				})
+			)
+			dispatch(setAdmin({ isAdmin: userIsAdmin }))
+		}
+	}, [dispatch, balance, userStats, userIsAdmin])
 
 	useEffect(() => {
-		if (db && email) {
-			fetchBalance(db, email, setBalance)
-			fetchStats(db, email, setWin, setLose)
-			fetchAdminStatus(db, email, dispatch)
+		if (uid) {
+			fetchBalance(uid)
+				.then(balance => {
+					setBalance(balance)
+				})
+				.catch(error => {
+					console.error(error)
+				})
+
+			fetchStats(uid)
+				.then(statsData => {
+					setUserStats({ wins: statsData.wins, loses: statsData.loses })
+				})
+				.catch(error => {
+					console.error(error)
+				})
+
+			fetchAdminStatus(uid)
+				.then(adminStatus => {
+					setUserIsAdmin(adminStatus)
+				})
+				.catch(error => {
+					console.error(error)
+				})
 		}
-	}, [db, email])
+	}, [uid])
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 

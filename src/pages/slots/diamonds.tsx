@@ -86,7 +86,7 @@ const Diamonds = () => {
 			alert('Недостатньо коштів на балансів')
 		} else {
 			const animate = () => {
-				updateLosesBalances(db, email, userBet)
+				updateLosesBalances(uid, userBet)
 				dispatch(decreaseBalance(userBet))
 				setIsAnimating(true)
 				setDisabled(true)
@@ -120,15 +120,7 @@ const Diamonds = () => {
 	useEffect(() => {
 		if (!isAnimating && isAnimatingCompleted) {
 			const items = [item1, item2, item3]
-			diamondChecker(
-				items,
-				db,
-				email,
-				dispatch,
-				userBet,
-				slotSounds,
-				topCombineDelay
-			)
+			diamondChecker(items, uid, dispatch, userBet, slotSounds, topCombineDelay)
 		}
 	}, [
 		item1,
