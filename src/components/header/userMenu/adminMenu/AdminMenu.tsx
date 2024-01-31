@@ -20,6 +20,8 @@ const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
 		action: 'increase' | 'reduce'
 	) => {
 		e.preventDefault()
+		console.log(action)
+		setTotalGames({ wins: 1, loses: 1, total: 1 })
 		// if (formData.email && formData.amount) {
 		// 	if (action === 'increase') {
 		// 		addUserBalance(db, formData.email, formData.amount)
