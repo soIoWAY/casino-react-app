@@ -1,11 +1,4 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../../store/store'
-import {
-	addUserBalance,
-	fetchTotalGame,
-	reduceUserBalance,
-} from '../../../../utils/adminUtils'
+import { useState } from 'react'
 import AdminForm from './AdminForm'
 import AdminMenuRow from './AdminMenuRow'
 
@@ -14,29 +7,27 @@ interface IAdminMenu {
 }
 
 const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
-	const { db } = useSelector((state: RootState) => state.db)
-
 	const [totalGames, setTotalGames] = useState({ wins: 0, loses: 0, total: 0 })
 
 	const [formData, setFormData] = useState({ email: '', amount: 0 })
 
-	useEffect(() => {
-		fetchTotalGame(db, setTotalGames)
-	}, [])
+	// useEffect(() => {
+	// 	fetchTotalGame(db, setTotalGames)
+	// }, [])
 
 	const balanceFormSubmitHandler = (
 		e: React.FormEvent<HTMLFormElement>,
 		action: 'increase' | 'reduce'
 	) => {
 		e.preventDefault()
-		if (formData.email && formData.amount) {
-			if (action === 'increase') {
-				addUserBalance(db, formData.email, formData.amount)
-			} else {
-				reduceUserBalance(db, formData.email, formData.amount)
-			}
-			setFormData({ email: '', amount: 0 })
-		}
+		// if (formData.email && formData.amount) {
+		// 	if (action === 'increase') {
+		// 		addUserBalance(db, formData.email, formData.amount)
+		// 	} else {
+		// 		reduceUserBalance(db, formData.email, formData.amount)
+		// 	}
+		// 	setFormData({ email: '', amount: 0 })
+		// }
 	}
 
 	return (

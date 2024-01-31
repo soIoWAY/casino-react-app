@@ -41,7 +41,7 @@ const Diamonds = () => {
 	const [userBet, setUserBet] = useState(0)
 
 	const { db } = useSelector((state: RootState) => state.db)
-	const { uid, email } = useSelector((state: RootState) => state.user)
+	const { uid } = useSelector((state: RootState) => state.user)
 
 	const dispatch = useDispatch()
 
