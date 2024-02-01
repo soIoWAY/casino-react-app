@@ -1,5 +1,5 @@
 interface IAdminMenuRow {
-	games: number
+	games: number | undefined
 	title: string
 }
 

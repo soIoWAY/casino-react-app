@@ -1,10 +1,9 @@
+import axios from 'axios'
 import {
 	DocumentData,
 	Firestore,
-	collection,
 	doc,
 	getDoc,
-	getDocs,
 	setDoc,
 } from 'firebase/firestore'
 
@@ -62,34 +61,34 @@ export const addUserBalance = async (
 	}
 }
 
-export const fetchTotalGame = async (
-	db: Firestore | null,
-	setTotalGames: React.Dispatch<React.SetStateAction<GameStats>>
-) => {
-	let totalWins = 0
-	let totalLoses = 0
+export const fetchTotalGame = async () => {
 	try {
-		if (db) {
-			const statsCollectionRef = collection(db, 'stats')
-			const statsQuerySnapshot = await getDocs(statsCollectionRef)
+		const href = `https://casino-app-54eb7-default-rtdb.europe-west1.firebasedatabase.app/stats.json`
+		const res = await axios.get(href)
+		const statsData = res.data
+		if (statsData && typeof statsData === 'object') {
+			let wins = 0
+			let loses = 0
+			const objToArr = Object.values(statsData)
 
-			statsQuerySnapshot.forEach(doc => {
-				const data = doc.data()
-				if (data.wins) {
-					totalWins += data.wins
-				}
-
-				if (data.loses) {
-					totalLoses += data.loses
+			objToArr.forEach(el => {
+				if (
+					typeof el === 'object' &&
+					el !== null &&
+					'wins' in el &&
+					'loses' in el &&
+					typeof el.wins === 'number' &&
+					typeof el.loses === 'number'
+				) {
+					wins += el.wins ?? 0
+					loses += el.loses ?? 0
 				}
 			})
+			return { wins, loses }
+		} else {
+			return { wins: 0, loses: 0 }
 		}
-	} catch (err) {
-		console.error(err)
+	} catch (error) {
+		throw error
 	}
-	setTotalGames({
-		wins: totalWins,
-		loses: totalLoses,
-		total: totalWins + totalLoses,
-	})
 }

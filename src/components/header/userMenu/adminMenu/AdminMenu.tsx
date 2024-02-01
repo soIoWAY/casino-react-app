@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { fetchTotalGame } from '../../../../utils/adminUtils'
 import AdminForm from './AdminForm'
 import AdminMenuRow from './AdminMenuRow'
 
@@ -7,13 +8,29 @@ interface IAdminMenu {
 }
 
 const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
-	const [totalGames, setTotalGames] = useState({ wins: 0, loses: 0, total: 0 })
+	const [totalGames, setTotalGames] = useState<{
+		wins: number | undefined
+		loses: number | undefined
+		total: number | undefined
+	}>({
+		wins: 0,
+		loses: 0,
+		total: 0,
+	})
 
 	const [formData, setFormData] = useState({ email: '', amount: 0 })
 
-	// useEffect(() => {
-	// 	fetchTotalGame(db, setTotalGames)
-	// }, [])
+	useEffect(() => {
+		fetchTotalGame()
+			.then(data =>
+				setTotalGames({
+					wins: data.wins,
+					loses: data.loses,
+					total: data.wins + data.loses,
+				})
+			)
+			.catch(error => console.log(error))
+	}, [])
 
 	const balanceFormSubmitHandler = (
 		e: React.FormEvent<HTMLFormElement>,
@@ -21,7 +38,6 @@ const AdminMenu = ({ closeAdmin }: IAdminMenu) => {
 	) => {
 		e.preventDefault()
 		console.log(action)
-		setTotalGames({ wins: 1, loses: 1, total: 1 })
 		// if (formData.email && formData.amount) {
 		// 	if (action === 'increase') {
 		// 		addUserBalance(db, formData.email, formData.amount)
