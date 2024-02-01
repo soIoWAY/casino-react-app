@@ -7,11 +7,11 @@ import {
 	setDoc,
 } from 'firebase/firestore'
 
-interface GameStats {
-	wins: number
-	loses: number
-	total: number
-}
+// interface GameStats {
+// 	wins: number
+// 	loses: number
+// 	total: number
+// }
 
 export const reduceUserBalance = async (
 	db: Firestore | null,
